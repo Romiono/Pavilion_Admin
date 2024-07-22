@@ -1,0 +1,19 @@
+.tabsWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  &__tabs {
+    border-radius: 0 0 5px 5px;
+    -webkit-box-shadow: 0px 2px 8px 0px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 0px 2px 8px 0px rgba(34, 60, 80, 0.2);
+    box-shadow: 0px 2px 8px 0px rgba(34, 60, 80, 0.2);
+    &__tab {
+      background-color: var(--ev-c-white);
+      color: var(--ev-c-black-soft);
+      &:hover {
+        color: var(--light-blue);
+      }
+    }
+  }
+
+}

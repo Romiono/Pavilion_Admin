@@ -1,0 +1,61 @@
+@use "sass:math";
+@import '@/styles/variables.scss';
+
+@function desktopVW($pixels) {
+    $result: $pixels / $desktopWidth * 100;
+    @return $result +vw;
+}
+
+@function smallDesktopVW($pixels) {
+    $result: $pixels / $smallDesktopWidth * 100;
+    @return $result +vw;
+}
+
+@function tabletVW($pixels) {
+    $result: $pixels / $tabletWidth * 100;
+    @return $result +vw;
+}
+
+@function mobileVW($pixels) {
+    $result: $pixels / $mobileWidth * 100;
+    @return $result +vw;
+}
+
+@function smallMobileVW($pixels) {
+    $result: $pixels / $smallMobileWidth * 100;
+    @return $result +vw;
+}
+
+@function calcFontSize($width, $font: $fontSize) {
+    @return #{math.div($font, math.div($width, 1px)) * 100}vw;
+}
+
+@mixin desktop {
+    @media ((min-width: ($smallDesktopWidth+1+px))) {
+        @content;
+    }
+}
+
+@mixin small-desktop {
+    @media (max-width: ($smallDesktopWidth+px)) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (max-width: ($tabletWidth+px)) {
+        @content;
+    }
+}
+
+@mixin mobile {
+    @media (max-width: ($mobileWidth+px)) {
+        @content;
+    }
+}
+
+@mixin small-mobile {
+    @media (max-width: ($smallMobileWidth+px)) {
+        @content;
+    }
+}

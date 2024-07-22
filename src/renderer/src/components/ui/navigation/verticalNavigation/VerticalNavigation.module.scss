@@ -1,0 +1,15 @@
+.navlist {
+  padding: 0;
+
+  &__link {
+    color: var(--ev-c-black-soft);
+    text-decoration: none;
+    transition: color ease-in-out 0.2s;
+    &:hover {
+      color: var(--light-blue);
+    }
+  }
+}
+
+
+
