@@ -1,0 +1,71 @@
+@import "../../../../styles/mixins";
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  h3 {
+    @include desktop {
+      font-size: desktopVW(24);
+    }
+    @include small-desktop {
+      font-size: smallDesktopVW(24);
+    }
+  }
+
+  &__inputList {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    &__preview {
+      max-width: 100%;
+      max-height: 500px;
+      margin: 10px;
+    }
+    &__inputs {
+      padding: 0 10px;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+  &__buttons {
+    //position: absolute;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    &__submitButton {
+      width: 300px;
+      border-radius: 5px;
+      font-size: 15px;
+      color: white;
+      background-color: #5fb771;
+      border: none;
+      height: 50px;
+      cursor: pointer;
+      &:active {
+        background-color: #327941;
+      }
+    }
+    &__cancelButton {
+      width: 300px;
+      border-radius: 5px;
+      font-size: 15px;
+      color: white;
+      background-color: #c95a5a;
+      border: none;
+      height: 50px;
+      cursor: pointer;
+      &:active {
+        background-color: #8d3434;
+      }
+    }
+  }
+
+}

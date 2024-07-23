@@ -1,10 +1,10 @@
 .container {
-  padding: 4px;
+  padding: 10px;
   border-radius: 4px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: auto;
   &.fill {
     background-color: var(--ev-c-white);
     -webkit-box-shadow: 0px 2px 8px 0px rgba(34, 60, 80, 0.2);
@@ -20,5 +20,11 @@
   }
   &.halfWidth {
     width: 50%;
+  }
+  &.fullHeight {
+    height: 100%;
+  }
+  &.autoHeight {
+    height: auto;
   }
 }

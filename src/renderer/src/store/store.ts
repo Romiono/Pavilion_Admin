@@ -1,10 +1,16 @@
-import {configureStore} from "@reduxjs/toolkit";
+import {combineReducers, configureStore} from "@reduxjs/toolkit";
+import horizontalEntityReducer from "./slices/horizontalEntitySlice";
+import verticalEntityReducer from "./slices/verticalEntitySlice";
 
-export const store = configureStore({
-  reducer: {
-
-  }
+const rootReducer = combineReducers({
+  horizontalEntity: horizontalEntityReducer,
+  verticalEntity: verticalEntityReducer,
 })
 
-export type RootState = ReturnType<typeof store.dispatch>
+// @ts-ignore
+export const store = configureStore({
+  reducer: rootReducer
+})
+
+export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

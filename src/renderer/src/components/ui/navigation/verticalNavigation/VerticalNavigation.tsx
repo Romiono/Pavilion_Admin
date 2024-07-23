@@ -14,10 +14,6 @@ import ListItemText from '@mui/material/ListItemText';
 import {PersonalVideo, Smartphone} from "@mui/icons-material";
 import {NavLink, Outlet} from "react-router-dom";
 import classes from './VerticalNavigation.module.scss'
-// import useVerticalNavStyles from "../../../../hooks/styleHooks/useVerticalNavStyles";
-// import {Drawer} from "@mui/material";
-// import clsx from "clsx";
-
 // @ts-ignore
 // const styles = useVerticalNavStyles();
 const drawerWidth = 320

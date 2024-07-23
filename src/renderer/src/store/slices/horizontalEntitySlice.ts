@@ -1,16 +1,49 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios, {AxiosError} from "axios";
-import horizontalEntity from "../../types/horizontalEntity";
 import {openNotification} from "../../helpers/notification";
 
+export interface IHorizontalEntity {
+  id: string,
+  // img: string, //константа
+  // x: number, //константа
+  // y: number, //константа
+  name: string,
+  about: {
+    title: {
+      img: string,
+      name: string,
+      number: string
+    },
+    text: any,
+    images: string[] | FormData,
+    // background: string, //константа
+  }
+}
+
 interface initialState {
-  entity: horizontalEntity | null;
+  entity: IHorizontalEntity;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: initialState = {
-  entity: null,
+  entity: {
+    id: '', //константа
+    // img: '', //константа
+    // x: 0, //константа
+    // y: 0, //константа
+    name: '',
+    about: {
+      title: {
+        img: '',
+        name: '',
+        number: ''
+      },
+      text: '',
+      images: [],
+      // background: '', //константа
+    }
+  },
   loading: false,
   error: null,
 }
@@ -18,9 +51,9 @@ const initialState: initialState = {
 export const getEntity = createAsyncThunk<any, any>(
   'horizontalEntity',
   // @ts-ignore
-  async (_, {rejectWithValue}) => {
+  async (type, {rejectWithValue}) => {
     try {
-      const data = await axios.get(`https://localhost:8080`)
+      const data = await axios.get(`https://localhost:8080/${type}`)
       return data
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -34,7 +67,23 @@ export const horizontalEntitySlice = createSlice({
   name: "horizontalEntity",
   initialState,
   reducers: {
-
+    setEntity: (state, action) => {
+      const data: IHorizontalEntity = action.payload
+      state.entity.name = data.name
+      state.entity.about.title = data.about.title
+      state.entity.about.text = data.about.text
+      if(data.about.images instanceof Array){
+        state.entity.about.images = [...data.about.images]
+      } else {
+        state.entity.about.images = data.about.images;
+      }
+    },
+    setName: (state, action) => {
+      state.entity.name = action.payload
+    },
+    setAbout: (state, action) => {
+      state.entity.about = action.payload
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getEntity.fulfilled, (state, action) => {
@@ -57,6 +106,6 @@ export const horizontalEntitySlice = createSlice({
   }
 })
 
-export const {} = horizontalEntitySlice.actions;
+export const {setEntity, setName, setAbout} = horizontalEntitySlice.actions;
 export default horizontalEntitySlice.reducer;
 

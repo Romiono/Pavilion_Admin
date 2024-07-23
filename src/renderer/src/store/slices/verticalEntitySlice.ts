@@ -1,10 +1,52 @@
-import VerticalEntity from "../../types/verticalEntity";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios, {AxiosError} from "axios";
 import {openNotification} from "../../helpers/notification";
 
+export interface IVerticalEntity {
+  id: string | null,
+  interval: {
+    start: number | null,
+    end: number | null,
+  }
+  header: {
+    title: string,
+    description: string
+  },
+  map: {
+    background: string
+  },
+  text: string | null,
+  secondLevel: {
+    header: {
+      title: string | null,
+      description: string | null
+    },
+    background: string | null,
+    thirdLevelBackground: string | null,
+    map: {
+      background: string | null
+    },
+    sources: {
+      id: string | null,
+      img: string | null,
+      x: number | null,
+      y: number | null,
+      about: {
+        number: number | null,
+        main: {
+          img: string | null,
+          title: string | null
+        },
+        text: string | null,
+        images: string[] | null
+      }
+    },
+    text: string | null
+  }
+}
+
 interface initialState {
-  entity: VerticalEntity | null,
+  entity: IVerticalEntity | null,
   loading: boolean,
   error: string | null
 }
