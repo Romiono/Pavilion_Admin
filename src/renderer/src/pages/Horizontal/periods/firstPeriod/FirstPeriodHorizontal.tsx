@@ -1,9 +1,12 @@
+import SimpleCard from "../../../../components/ui/simpleCard/SimpleCard";
 
 
 const FirstPeriodHorizontal = () => {
   return (
     <div>
-      первый период горизонтальный
+      <SimpleCard>
+        Это первый период горизонтального сайта
+      </SimpleCard>
     </div>
   );
 };

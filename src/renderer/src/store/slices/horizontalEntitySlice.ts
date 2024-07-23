@@ -18,9 +18,9 @@ const initialState: initialState = {
 export const getEntity = createAsyncThunk<any, any>(
   'horizontalEntity',
   // @ts-ignore
-  async (payload, {rejectWithValue}) => {
+  async (_, {rejectWithValue}) => {
     try {
-      const data = await axios.get(`https://localhost:8080/${payload}`)
+      const data = await axios.get(`https://localhost:8080`)
       return data
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -54,6 +54,9 @@ export const horizontalEntitySlice = createSlice({
           text: `${action.payload}`
         })
     })
-
   }
 })
+
+export const {} = horizontalEntitySlice.actions;
+export default horizontalEntitySlice.reducer;
+

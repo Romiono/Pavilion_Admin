@@ -2,6 +2,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-bottom: 10px;
   &__tabs {
     border-radius: 0 0 5px 5px;
     -webkit-box-shadow: 0px 2px 8px 0px rgba(34, 60, 80, 0.2);
@@ -16,4 +17,8 @@
     }
   }
 
+}
+
+.current {
+  color: var(--light-blue);
 }
