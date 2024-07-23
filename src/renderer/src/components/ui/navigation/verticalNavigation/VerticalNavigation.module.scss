@@ -1,3 +1,4 @@
+@import "../../../../styles/mixins";
 .navlist {
   padding: 0;
 
@@ -8,6 +9,15 @@
     &:hover {
       color: var(--light-blue);
     }
+  }
+}
+
+.text {
+  @include desktop {
+    font-size: desktopVW(14);
+  }
+  @include small-desktop {
+    font-size: smallDesktopVW(14);
   }
 }
 

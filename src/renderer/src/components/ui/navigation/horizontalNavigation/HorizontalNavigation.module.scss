@@ -1,3 +1,5 @@
+@import "../../../../styles/mixins";
+
 .tabsWrapper {
   width: 100%;
   display: flex;
@@ -13,6 +15,14 @@
       color: var(--ev-c-black-soft);
       &:hover {
         color: var(--light-blue);
+      }
+      &__child {
+        @include desktop {
+          font-size: desktopVW(14);
+        }
+        @include small-desktop {
+          font-size: smallDesktopVW(14);
+        }
       }
     }
   }

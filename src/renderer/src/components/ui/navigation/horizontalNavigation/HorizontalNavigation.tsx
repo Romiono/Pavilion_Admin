@@ -33,7 +33,7 @@ const HorizontalNavigation = () => {
               <NavLink className={clsx(classes.tabsWrapper__tabs__tab, {
                 [classes.current]: item.id === selectedPage
               }) } to={item.to}>
-                <Tab label={item.label}/>
+                <Tab className={classes.tabsWrapper__tabs__tab__child} label={item.label}/>
               </NavLink>
             </span>
           )

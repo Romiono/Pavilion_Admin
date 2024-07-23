@@ -73,26 +73,8 @@ const VerticalNavigation = () => {
   return (
     <Box sx={{display: 'flex'}}>
       <CssBaseline/>
-      {/*<AppBar position="fixed" open={open}>*/}
-      {/*  <Toolbar>*/}
-      {/*    <Typography variant="h6" noWrap component="div">*/}
-      {/*      Mini variant drawer*/}
-      {/*      добавить BreadCrumbs
-      {/*    </Typography>*/}
-      {/*  </Toolbar>*/}
-      {/*</AppBar>*/}
       <Drawer variant="permanent"
               open={open}
-              // className={clsx(styles.drawer, {
-              //   [styles.drawerOpen]: open,
-              //   [styles.drawerClose]: !open,
-              // })}
-              // classes={{
-              //   paper: clsx({
-              //     [styles.drawerOpen]: open,
-              //     [styles.drawerClose]: !open,
-              //   }),
-              // }}
       >
         <List className={classes.navlist} style={{padding: 0}}>
           {!open ? <ListItem disablePadding sx={{display: 'block'}}>
@@ -160,7 +142,7 @@ const VerticalNavigation = () => {
                   <Smartphone/>
                 </ListItemIcon>
 
-                <ListItemText primary='Вертикальный' sx={{opacity: open ? 1 : 0}}/>
+                <ListItemText classes={{primary: classes.text}}  primary='Вертикальный' sx={{opacity: open ? 1 : 0}}/>
 
               </ListItemButton>
             </ListItem>
@@ -184,7 +166,7 @@ const VerticalNavigation = () => {
                   <PersonalVideo/>
                 </ListItemIcon>
 
-                <ListItemText primary="Горизонтальный" sx={{opacity: open ? 1 : 0}}/>
+                <ListItemText className={classes.text} primary="Горизонтальный" sx={{opacity: open ? 1 : 0}}/>
 
               </ListItemButton>
             </ListItem>
