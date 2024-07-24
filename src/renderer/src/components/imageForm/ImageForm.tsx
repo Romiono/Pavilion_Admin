@@ -14,6 +14,7 @@ const ImageForm = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [images, setImages] = useState<IImages[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [currentDragImage, setCurrentDragImage] = useState(null)
 
   useEffect(() => {
     return setImages(serverImages.map((item, index) => {
@@ -52,18 +53,18 @@ const ImageForm = () => {
     setImages((prev) => prev.filter((item) => item.url !== url));
   }
 
-  const onDragOver = (e) => {
+  const onDragOverUploader = (e) => {
     e.preventDefault()
     setIsDragging(true)
     e.dataTransfer.dropEffect = "copy";
   }
 
-  const onDragLeave = (e) => {
+  const onDragLeaveUploader = (e) => {
     e.preventDefault()
     setIsDragging(false);
   }
 
-  const onDrop = (e) => {
+  const onDropUploader = (e) => {
     e.preventDefault()
     setIsDragging(false)
     const files = e.dataTransfer.files
@@ -81,10 +82,27 @@ const ImageForm = () => {
     }
   }
 
+  const onDragStartImages = (item) => {
+    setCurrentDragImage(item)
+  }
+
+  const onDropImages = (e, item) => {
+    e.preventDefault()
+    if(currentDragImage) {
+      const currentIndex = images.indexOf(currentDragImage)
+      const dropIndex = images.indexOf(item)
+      const arr = images
+      arr.splice(currentIndex, 1)
+      arr.splice(dropIndex + 1, 0, currentDragImage)
+      setImages([...arr])
+      console.log("sus")
+    }
+  }
+
   return (
     <div className={classes.container}>
       <div className={classes.container__dragArea} >
-        <SimpleCard variant='outlined' height='full' onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop} className={clsx({
+        <SimpleCard variant='outlined' height='full' onDragOver={onDragOverUploader} onDragLeave={onDragLeaveUploader} onDrop={onDropUploader} className={clsx({
           [classes.active]: isDragging
         })}>
             {
@@ -102,7 +120,15 @@ const ImageForm = () => {
       <div className={classes.container__images}>
         {
           images?.map((image) =>
-            <div key={image.name} className={classes.container__images__image}>
+            <div key={image.name}
+                 className={classes.container__images__image}
+                 draggable={true}
+                 onDragStart={() => onDragStartImages(image)}
+                 onDragOver={(e) => e.preventDefault()}
+                 onDrop={(e) => onDropImages(e, image)}
+
+
+            >
               <span onClick={() => deleteImage(image.url)}>&times;</span>
               <img src={image.url} alt={image.name} className={classes.container__images__image__img} />
             </div>
