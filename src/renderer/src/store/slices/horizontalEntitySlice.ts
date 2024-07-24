@@ -15,7 +15,7 @@ export interface IHorizontalEntity {
       number: string
     },
     text: any,
-    images: string[] | FormData,
+    images: string[],
     // background: string, //константа
   }
 }

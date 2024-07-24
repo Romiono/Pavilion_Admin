@@ -1,23 +1,23 @@
 import clsx from "clsx";
 import classes from "./SimpleCard.module.scss"
-import {ReactNode} from "react";
+import React, {ReactNode} from "react";
 
-interface SimpleCard {
-  className?: any
+interface SimpleCard extends React.HTMLAttributes<HTMLDivElement> {
   variant?: "fill" | "outlined"
   width?: "1/2" | "full"
   height?: "auto" | "full"
   children: ReactNode
+
 }
 
 const SimpleCard = ({
-                      className,
                       variant = "fill",
                       width = "full" ,
                       height = "auto",
-                      children}: SimpleCard) => {
+                      children,
+                      ...props}: SimpleCard) => {
   return (
-    <div className={clsx(className, classes.container, {
+    <div {...props} className={clsx(props.className, classes.container, {
       [classes.fill]: variant === "fill",
       [classes.outlined]: variant === "outlined",
       [classes.full]: width === "full",

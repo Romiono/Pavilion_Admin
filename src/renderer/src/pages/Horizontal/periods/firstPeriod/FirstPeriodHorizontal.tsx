@@ -4,6 +4,7 @@ import {useEffect} from "react";
 import {getEntity} from "../../../../store/slices/verticalEntitySlice";
 import classes from "./FirstPeriodHorizontal.module.scss";
 import {TextField} from "@mui/material";
+import ImageForm from "../../../../components/imageForm/ImageForm";
 
 
 const FirstPeriodHorizontal = () => {
@@ -21,7 +22,7 @@ const FirstPeriodHorizontal = () => {
               <h3>Основная информация</h3>
               <div className={classes.container__inputList}>
                 <div className={classes.container__inputList__preview}>
-                  <SimpleCard width="full" variant='outlined' height='full'>
+                  <SimpleCard width="full" variant='outlined' height='full' className={classes.container__inputList__preview__image}>
                     <img className={classes.container__inputList__preview__img} src={entity.about.title.img} alt="первью периода" />
                   </SimpleCard>
                 </div>
@@ -33,8 +34,11 @@ const FirstPeriodHorizontal = () => {
                 </div>
               </div>
             </SimpleCard>
-            <SimpleCard height='full'>
+            <SimpleCard>
               <h3>Галерея</h3>
+              <div className={classes.container__inputList}>
+                <ImageForm/>
+              </div>
             </SimpleCard>
           </div>
           <div className={classes.container__buttons}>
