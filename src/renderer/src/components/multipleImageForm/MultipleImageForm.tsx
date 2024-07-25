@@ -1,4 +1,4 @@
-import classes from "./ImageForm.module.scss";
+import classes from "./MultipleImageForm.module.scss";
 import SimpleCard from "../ui/simpleCard/SimpleCard";
 import {useEffect, useRef, useState} from "react";
 import {useAppSelector} from "../../hooks/redux/useTypedRedux";
@@ -9,19 +9,26 @@ interface IImages {
   url: string
 }
 
-const ImageForm = () => {
+interface MultipleImageForm {
+  images: IImages[],
+  setImages: (i) => void
+  multiple?: boolean
+}
+
+const MultipleImageForm = ({images, setImages}: MultipleImageForm) => {
   const serverImages = useAppSelector(state => state.horizontalEntity.entity.about.images);
   const [isDragging, setIsDragging] = useState(false);
-  const [images, setImages] = useState<IImages[]>([]);
+  // const [images, setImages] = useState<IImages[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [currentDragImage, setCurrentDragImage] = useState(null)
 
   useEffect(() => {
-    return setImages(serverImages.map((item, index) => {
-      return {
-        name: index.toString(),
-        url: item
-      };
+    setImages(
+      serverImages.map((item, index) => {
+        return {
+          name: index.toString(),
+          url: item
+        };
     }));
   }, [])
 
@@ -139,4 +146,4 @@ const ImageForm = () => {
   );
 };
 
-export default ImageForm;
+export default MultipleImageForm;

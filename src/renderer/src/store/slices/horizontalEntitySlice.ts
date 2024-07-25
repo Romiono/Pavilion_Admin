@@ -81,8 +81,17 @@ export const horizontalEntitySlice = createSlice({
     setName: (state, action) => {
       state.entity.name = action.payload
     },
-    setAbout: (state, action) => {
-      state.entity.about = action.payload
+    setAboutTitleName: (state, action) => {
+      state.entity.about.title.name = action.payload
+    },
+    setAboutTitleNumber: (state, action) => {
+      state.entity.about.title.number = action.payload
+    },
+    setAboutTitleImage: (state, action) => {
+      state.entity.about.title.img = action.payload
+    },
+    setAboutText: (state, action) => {
+      state.entity.about.text = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -106,6 +115,13 @@ export const horizontalEntitySlice = createSlice({
   }
 })
 
-export const {setEntity, setName, setAbout} = horizontalEntitySlice.actions;
+export const {
+  setEntity,
+  setName,
+  setAboutTitleName,
+  setAboutText,
+  setAboutTitleImage,
+  setAboutTitleNumber} = horizontalEntitySlice.actions;
+
 export default horizontalEntitySlice.reducer;
 

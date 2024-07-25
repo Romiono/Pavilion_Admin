@@ -8,14 +8,8 @@ import {store} from "./store/store";
 import {createHashRouter, RouterProvider} from "react-router-dom";
 import Horizontal from "./pages/Horizontal/Horizontal";
 import Vertical from "./pages/Vertical/Vertical";
-import FirstPeriodHorizontal from "./pages/Horizontal/periods/firstPeriod/FirstPeriodHorizontal";
-import SecondPeriodHorizontal from "./pages/Horizontal/periods/secondPeriod/SecondPeriodHorizontal";
-import ThridPeriodHorizontal from "./pages/Horizontal/periods/thirdPeriod/ThridPeriodHorizontal";
-import FourthPeriodHorizontal from "./pages/Horizontal/periods/fourthPeriod/FourthPeriodHorizontal";
-import FirstPeriodVertical from "./pages/Vertical/periods/firstPeriod/FirstPeriodVertical";
-import SecondPeriodVertical from "./pages/Vertical/periods/secondPeriod/SecondPeriodVertical";
-import ThridPeriodVertical from "./pages/Vertical/periods/thirdPeriod/ThridPeriodVertical";
-import FourthPeriodVertical from "./pages/Vertical/periods/fourthPeriod/FourthPeriodVertical";
+import PeriodHorizontal from "./pages/Horizontal/periods/PeriodHorizontal";
+import PeriodVertical from "./pages/Vertical/periods/firstPeriod/PeriodVertical";
 
 const router = createHashRouter([
   {
@@ -28,19 +22,19 @@ const router = createHashRouter([
         children: [
           {
             path: 'first-period',
-            element: <FirstPeriodHorizontal />,
+            element: <PeriodHorizontal period={1} />,
           },
           {
             path: 'second-period',
-            element: <SecondPeriodHorizontal />,
+            element: <PeriodHorizontal period={2} />,
           },
           {
             path: 'third-period',
-            element: <ThridPeriodHorizontal />,
+            element: <PeriodHorizontal period={3} />,
           },
           {
             path: 'fourth-period',
-            element: <FourthPeriodHorizontal />,
+            element: <PeriodHorizontal period={4} />,
           },
         ]
       },
@@ -50,19 +44,19 @@ const router = createHashRouter([
         children: [
           {
             path: 'first-period',
-            element: <FirstPeriodVertical />,
+            element: <PeriodVertical period={1}/>,
           },
           {
             path: 'second-period',
-            element: <SecondPeriodVertical />,
+            element: <PeriodVertical period={2}/>,
           },
           {
             path: 'third-period',
-            element: <ThridPeriodVertical />,
+            element: <PeriodVertical period={3}/>,
           },
           {
             path: 'fourth-period',
-            element: <FourthPeriodVertical />,
+            element: <PeriodVertical period={4}/>,
           },
         ]
       }

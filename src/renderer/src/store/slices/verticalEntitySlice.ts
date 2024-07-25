@@ -58,7 +58,7 @@ const initialState: initialState = {
 }
 
 export const getEntity = createAsyncThunk<any, any>(
-  'horizontalEntity',
+  'verticalEntity',
   // @ts-ignore
   async (_, {rejectWithValue}) => {
     try {
