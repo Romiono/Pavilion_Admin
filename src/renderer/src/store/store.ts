@@ -1,10 +1,10 @@
-import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import horizontalEntityReducer from "./slices/horizontalEntitySlice";
-import verticalEntityReducer from "./slices/verticalEntitySlice";
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import horizontalEntityReducer from './slices/horizontalEntitySlice'
+import verticalEntityReducer from './slices/verticalEntitySlice'
 
 const rootReducer = combineReducers({
   horizontalEntity: horizontalEntityReducer,
-  verticalEntity: verticalEntityReducer,
+  verticalEntity: verticalEntityReducer
 })
 
 // @ts-ignore

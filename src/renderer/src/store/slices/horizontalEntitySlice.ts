@@ -1,29 +1,29 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import axios, {AxiosError} from "axios";
-import {openNotification} from "../../helpers/notification";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios, { AxiosError } from 'axios'
+import { openNotification } from '../../helpers/notification'
 
 export interface IHorizontalEntity {
-  id: string,
+  id: string
   // img: string, //константа
   // x: number, //константа
   // y: number, //константа
-  name: string,
+  name: string
   about: {
     title: {
-      img: string,
-      name: string,
+      img: string
+      name: string
       number: string
-    },
-    text: any,
-    images: string[],
+    }
+    text: any
+    images: string[]
     // background: string, //константа
   }
 }
 
 interface initialState {
-  entity: IHorizontalEntity;
-  loading: boolean;
-  error: string | null;
+  entity: IHorizontalEntity
+  loading: boolean
+  error: string | null
 }
 
 const initialState: initialState = {
@@ -40,18 +40,18 @@ const initialState: initialState = {
         number: ''
       },
       text: '',
-      images: [],
+      images: []
       // background: '', //константа
     }
   },
   loading: false,
-  error: null,
+  error: null
 }
 
 export const getEntity = createAsyncThunk<any, any>(
   'horizontalEntity',
   // @ts-ignore
-  async (type, {rejectWithValue}) => {
+  async (type, { rejectWithValue }) => {
     try {
       const data = await axios.get(`https://localhost:8080/${type}`)
       return data
@@ -64,7 +64,7 @@ export const getEntity = createAsyncThunk<any, any>(
 )
 
 export const horizontalEntitySlice = createSlice({
-  name: "horizontalEntity",
+  name: 'horizontalEntity',
   initialState,
   reducers: {
     setEntity: (state, action) => {
@@ -72,10 +72,10 @@ export const horizontalEntitySlice = createSlice({
       state.entity.name = data.name
       state.entity.about.title = data.about.title
       state.entity.about.text = data.about.text
-      if(data.about.images instanceof Array){
+      if (data.about.images instanceof Array) {
         state.entity.about.images = [...data.about.images]
       } else {
-        state.entity.about.images = data.about.images;
+        state.entity.about.images = data.about.images
       }
     },
     setName: (state, action) => {
@@ -96,21 +96,21 @@ export const horizontalEntitySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getEntity.fulfilled, (state, action) => {
-      state.entity = action.payload;
-      state.loading = false;
-      state.error = null;
+      state.entity = action.payload
+      state.loading = false
+      state.error = null
     })
     builder.addCase(getEntity.pending, (state) => {
-      state.error = null;
-      state.loading = true;
+      state.error = null
+      state.loading = true
     })
     builder.addCase(getEntity.rejected, (state, action) => {
-        state.loading = false;
-        state.error = `${action.payload}`;
-        openNotification({
-          type: 'error',
-          text: `${action.payload}`
-        })
+      state.loading = false
+      state.error = `${action.payload}`
+      openNotification({
+        type: 'error',
+        text: `${action.payload}`
+      })
     })
   }
 })
@@ -121,7 +121,7 @@ export const {
   setAboutTitleName,
   setAboutText,
   setAboutTitleImage,
-  setAboutTitleNumber} = horizontalEntitySlice.actions;
+  setAboutTitleNumber
+} = horizontalEntitySlice.actions
 
-export default horizontalEntitySlice.reducer;
-
+export default horizontalEntitySlice.reducer

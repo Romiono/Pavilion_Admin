@@ -1,11 +1,5 @@
-
-
 const SecondPeriodVertical = () => {
-  return (
-    <div>
+  return <div></div>
+}
 
-    </div>
-  );
-};
-
-export default SecondPeriodVertical;
+export default SecondPeriodVertical

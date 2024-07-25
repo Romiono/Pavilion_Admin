@@ -3,61 +3,61 @@ import './styles/main.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import {Provider} from "react-redux";
-import {store} from "./store/store";
-import {createHashRouter, RouterProvider} from "react-router-dom";
-import Horizontal from "./pages/Horizontal/Horizontal";
-import Vertical from "./pages/Vertical/Vertical";
-import PeriodHorizontal from "./pages/Horizontal/periods/PeriodHorizontal";
-import PeriodVertical from "./pages/Vertical/periods/firstPeriod/PeriodVertical";
+import { Provider } from 'react-redux'
+import { store } from './store/store'
+import { createHashRouter, RouterProvider } from 'react-router-dom'
+import Horizontal from './pages/Horizontal/Horizontal'
+import Vertical from './pages/Vertical/Vertical'
+import PeriodHorizontal from './pages/Horizontal/periods/PeriodHorizontal'
+import PeriodVertical from './pages/Vertical/periods/firstPeriod/PeriodVertical'
 
 const router = createHashRouter([
   {
     path: '/',
-    element: <App/>,
+    element: <App />,
     children: [
       {
         path: 'horizontal',
-        element: <Horizontal/>,
+        element: <Horizontal />,
         children: [
           {
             path: 'first-period',
-            element: <PeriodHorizontal period={1} />,
+            element: <PeriodHorizontal period={1} />
           },
           {
             path: 'second-period',
-            element: <PeriodHorizontal period={2} />,
+            element: <PeriodHorizontal period={2} />
           },
           {
             path: 'third-period',
-            element: <PeriodHorizontal period={3} />,
+            element: <PeriodHorizontal period={3} />
           },
           {
             path: 'fourth-period',
-            element: <PeriodHorizontal period={4} />,
-          },
+            element: <PeriodHorizontal period={4} />
+          }
         ]
       },
       {
         path: 'vertical',
-        element: <Vertical/>,
+        element: <Vertical />,
         children: [
           {
             path: 'first-period',
-            element: <PeriodVertical period={1}/>,
+            element: <PeriodVertical period={1} />
           },
           {
             path: 'second-period',
-            element: <PeriodVertical period={2}/>,
+            element: <PeriodVertical period={2} />
           },
           {
             path: 'third-period',
-            element: <PeriodVertical period={3}/>,
+            element: <PeriodVertical period={3} />
           },
           {
             path: 'fourth-period',
-            element: <PeriodVertical period={4}/>,
-          },
+            element: <PeriodVertical period={4} />
+          }
         ]
       }
     ]
@@ -65,10 +65,9 @@ const router = createHashRouter([
 ])
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </Provider>
   </React.StrictMode>
 )

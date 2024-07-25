@@ -1,15 +1,15 @@
-import HorizontalNavigation from "../../components/ui/navigation/horizontalNavigation/HorizontalNavigation";
-import {Outlet} from "react-router-dom";
+import HorizontalNavigation from '../../components/ui/navigation/horizontalNavigation/HorizontalNavigation'
+import { Outlet } from 'react-router-dom'
 
 const Vertical = () => {
   return (
     <div>
-      <HorizontalNavigation/>
+      <HorizontalNavigation />
       <>
-        <Outlet/>
+        <Outlet />
       </>
     </div>
-  );
-};
+  )
+}
 
-export default Vertical;
+export default Vertical

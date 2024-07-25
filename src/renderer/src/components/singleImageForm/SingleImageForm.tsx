@@ -1,30 +1,27 @@
-import SimpleCard from "../ui/simpleCard/SimpleCard";
-import clsx from "clsx";
-import {useEffect, useRef, useState} from "react";
+import SimpleCard from '../ui/simpleCard/SimpleCard'
+import clsx from 'clsx'
+import { useEffect, useRef, useState } from 'react'
 import classes from './SingleImageForm.module.scss'
-import {useAppSelector} from "../../hooks/redux/useTypedRedux";
+import { useAppSelector } from '../../hooks/redux/useTypedRedux'
 
 interface SingleImageForm {
   image: {
-    file: string | object,
+    file: string | object
     url: string
-  },
+  }
   setImage: (image) => void
 }
 
-
-const SingleImageForm = ({image, setImage}: SingleImageForm) => {
-  const [isDragging, setIsDragging] = useState(false);
-  const serverImage = useAppSelector(state => state.horizontalEntity.entity.about.title.img)
-  const inputRef = useRef<HTMLInputElement>(null);
+const SingleImageForm = ({ image, setImage }: SingleImageForm) => {
+  const [isDragging, setIsDragging] = useState(false)
+  const serverImage = useAppSelector((state) => state.horizontalEntity.entity.about.title.img)
+  const inputRef = useRef<HTMLInputElement>(null)
   useEffect(() => {
     if (serverImage) {
-      setImage(
-        {
-          file: new URL(serverImage).origin,
-          url: serverImage
-        }
-      )
+      setImage({
+        file: new URL(serverImage).origin,
+        url: serverImage
+      })
     }
   }, [])
 
@@ -35,7 +32,7 @@ const SingleImageForm = ({image, setImage}: SingleImageForm) => {
 
   const onDragLeaveUploader = (e) => {
     e.preventDefault()
-    setIsDragging(false);
+    setIsDragging(false)
   }
 
   const onDropUploader = (e) => {
@@ -43,53 +40,66 @@ const SingleImageForm = ({image, setImage}: SingleImageForm) => {
     setIsDragging(false)
     const file = [...e.dataTransfer.files]
     console.log(file)
-    setImage(
-      {
-        file: file[0],
-        url: URL.createObjectURL(file[0]),
-      }
-    )
+    setImage({
+      file: file[0],
+      url: URL.createObjectURL(file[0])
+    })
   }
 
   const Browse = () => {
     if (inputRef.current) {
-      inputRef.current.click();
+      inputRef.current.click()
     }
   }
 
   const onFileSelect = (e) => {
     const file = e.target.files[0]
-    console.log(file);
-    setImage(
-      {
-        file,
-        url: URL.createObjectURL(file),
-      }
-    )
+    console.log(file)
+    setImage({
+      file,
+      url: URL.createObjectURL(file)
+    })
   }
 
   return (
-    <div className={classes.container__dragArea} onDragOver={onDragOverUploader} onDragLeave={onDragLeaveUploader}
-         onDrop={onDropUploader}>
-      <img src={image.url} alt={image.file.toString()} className={classes.container__dragArea__bgImage}/>
-      <SimpleCard variant='outlined' height='full'  className={clsx({
-        [classes.active]: isDragging,
-        [classes.disabled]: !isDragging
-      })}>
-          {
-            isDragging ?
-              <p className={classes.container__dragArea__text}>Drop images</p>
-              :
-              <p className={classes.container__dragArea__text}>Drag & drop images here or <span onClick={Browse}
-                                                                                                className={classes.container__dragArea__text__span}>
-                  Browse
-                </span>
-              </p>
-          }
-        <input type='file' accept='image/*,.png,.jpg,.jpeg,.web' onChange={onFileSelect}
-               className={classes.hidden} ref={inputRef}/>
+    <div
+      className={classes.container__dragArea}
+      onDragOver={onDragOverUploader}
+      onDragLeave={onDragLeaveUploader}
+      onDrop={onDropUploader}
+    >
+      <img
+        src={image.url}
+        alt={image.file.toString()}
+        className={classes.container__dragArea__bgImage}
+      />
+      <SimpleCard
+        variant="outlined"
+        height="full"
+        className={clsx({
+          [classes.active]: isDragging,
+          [classes.disabled]: !isDragging
+        })}
+      >
+        {isDragging ? (
+          <p className={classes.container__dragArea__text}>Drop images</p>
+        ) : (
+          <p className={classes.container__dragArea__text}>
+            Drag & drop images here or{' '}
+            <span onClick={Browse} className={classes.container__dragArea__text__span}>
+              Browse
+            </span>
+          </p>
+        )}
+        <input
+          type="file"
+          accept="image/*,.png,.jpg,.jpeg,.web"
+          onChange={onFileSelect}
+          className={classes.hidden}
+          ref={inputRef}
+        />
       </SimpleCard>
     </div>
   )
 }
-export default SingleImageForm;
+export default SingleImageForm

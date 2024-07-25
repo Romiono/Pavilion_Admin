@@ -4,25 +4,22 @@ $tabletWidth: 750;
 $mobileWidth: 450;
 $smallMobileWidth: 320;
 
-
 @media only screen and (max-width: $desktopWidth) {
-    $actualWidth: $desktopWidth
+  $actualWidth: $desktopWidth;
 }
 
 @media only screen and (max-width: $smallDesktopWidth) {
-    $actualWidth: $smallDesktopWidth
+  $actualWidth: $smallDesktopWidth;
 }
 
 @media only screen and (max-width: $tabletWidth) {
-    $actualWidth: $tabletWidth
+  $actualWidth: $tabletWidth;
 }
 
 @media only screen and (max-width: $mobileWidth) {
-    $actualWidth: $mobileWidth
+  $actualWidth: $mobileWidth;
 }
 
 @media only screen and (max-width: $smallMobileWidth) {
-    $actualWidth: $smallMobileWidth
+  $actualWidth: $smallMobileWidth;
 }
-
-

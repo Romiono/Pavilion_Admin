@@ -1,17 +1,16 @@
-import {Outlet} from "react-router-dom";
+import { Outlet } from 'react-router-dom'
 // import classes from './Horizontal.module.scss'
-import HorizontalNavigation from "../../components/ui/navigation/horizontalNavigation/HorizontalNavigation";
+import HorizontalNavigation from '../../components/ui/navigation/horizontalNavigation/HorizontalNavigation'
 
 const Horizontal = () => {
-
   return (
     <div>
-      <HorizontalNavigation/>
+      <HorizontalNavigation />
       <>
-        <Outlet/>
+        <Outlet />
       </>
     </div>
-  );
-};
+  )
+}
 
-export default Horizontal;
+export default Horizontal

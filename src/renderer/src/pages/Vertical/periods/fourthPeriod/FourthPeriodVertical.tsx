@@ -1,11 +1,5 @@
-
-
 const FourthPeriodVertical = () => {
-  return (
-    <div>
+  return <div></div>
+}
 
-    </div>
-  );
-};
-
-export default FourthPeriodVertical;
+export default FourthPeriodVertical

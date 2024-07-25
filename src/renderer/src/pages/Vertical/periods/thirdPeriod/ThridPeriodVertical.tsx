@@ -1,11 +1,5 @@
-
-
 const ThridPeriodVertical = () => {
-  return (
-    <div>
+  return <div></div>
+}
 
-    </div>
-  );
-};
-
-export default ThridPeriodVertical;
+export default ThridPeriodVertical
