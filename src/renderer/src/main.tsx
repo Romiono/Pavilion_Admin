@@ -8,7 +8,6 @@ import { store } from './store/store'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
 import Horizontal from './pages/Horizontal/Horizontal'
 import Vertical from './pages/Vertical/Vertical'
-import PeriodHorizontal from './pages/Horizontal/periods/PeriodHorizontal'
 import PeriodVertical from './pages/Vertical/periods/firstPeriod/PeriodVertical'
 
 const router = createHashRouter([
@@ -18,25 +17,7 @@ const router = createHashRouter([
     children: [
       {
         path: 'horizontal',
-        element: <Horizontal />,
-        children: [
-          {
-            path: 'first-period',
-            element: <PeriodHorizontal period={1} />
-          },
-          {
-            path: 'second-period',
-            element: <PeriodHorizontal period={2} />
-          },
-          {
-            path: 'third-period',
-            element: <PeriodHorizontal period={3} />
-          },
-          {
-            path: 'fourth-period',
-            element: <PeriodHorizontal period={4} />
-          }
-        ]
+        element: <Horizontal />
       },
       {
         path: 'vertical',

@@ -14,7 +14,7 @@ export interface IHorizontalEntity {
       name: string
       number: string
     }
-    text: any
+    text: string
     images: string[]
     // background: string, //константа
   }

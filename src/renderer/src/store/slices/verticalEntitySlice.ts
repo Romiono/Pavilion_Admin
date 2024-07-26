@@ -3,58 +3,67 @@ import axios, { AxiosError } from 'axios'
 import { openNotification } from '../../helpers/notification'
 
 export interface IVerticalEntity {
-  id: string | null
-  interval: {
-    start: number | null
-    end: number | null
-  }
+  id: string
   header: {
     title: string
     description: string
   }
-  map: {
-    background: string
-  }
-  text: string | null
+  text: string
   secondLevel: {
     header: {
-      title: string | null
-      description: string | null
-    }
-    background: string | null
-    thirdLevelBackground: string | null
-    map: {
-      background: string | null
+      title: string
+      description: string
     }
     sources: {
-      id: string | null
-      img: string | null
-      x: number | null
-      y: number | null
       about: {
-        number: number | null
+        number: string
         main: {
-          img: string | null
-          title: string | null
+          img: string
+          title: string
         }
-        text: string | null
-        images: string[] | null
+        text: string
+        images: string[]
       }
     }
-    text: string | null
+    text: string
   }
 }
 
 interface initialState {
-  entity: IVerticalEntity | null
+  entity: IVerticalEntity
   loading: boolean
-  error: string | null
+  error: string
 }
 
 const initialState: initialState = {
-  entity: null,
+  entity: {
+    id: '',
+    header: {
+      title: '',
+      description: ''
+    },
+    text: '',
+    secondLevel: {
+      header: {
+        title: '',
+        description: ''
+      },
+      sources: {
+        about: {
+          number: '',
+          main: {
+            img: '',
+            title: ''
+          },
+          text: '',
+          images: []
+        }
+      },
+      text: ''
+    }
+  },
   loading: false,
-  error: null
+  error: ''
 }
 
 export const getEntity = createAsyncThunk<any, any>(
@@ -80,10 +89,10 @@ export const verticalEntitySlice = createSlice({
     builder.addCase(getEntity.fulfilled, (state, action) => {
       state.entity = action.payload
       state.loading = false
-      state.error = null
+      state.error = ''
     })
     builder.addCase(getEntity.pending, (state) => {
-      state.error = null
+      state.error = ''
       state.loading = true
     })
     builder.addCase(getEntity.rejected, (state, action) => {

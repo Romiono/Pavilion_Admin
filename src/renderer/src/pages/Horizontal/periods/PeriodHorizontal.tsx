@@ -1,6 +1,6 @@
 import SimpleCard from '../../../components/ui/simpleCard/SimpleCard'
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux/useTypedRedux'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { getEntity } from '../../../store/slices/verticalEntitySlice'
 import classes from './PeriodHorizontal.module.scss'
 import { TextField } from '@mui/material'
@@ -14,21 +14,24 @@ import {
 } from '../../../store/slices/horizontalEntitySlice'
 import SingleImageForm from '../../../components/singleImageForm/SingleImageForm'
 
-interface PeriodHorizontal {
-  period: number
-}
-
-const PeriodHorizontal = ({ period }: PeriodHorizontal) => {
+const PeriodHorizontal = () => {
   const { entity, loading } = useAppSelector((state) => state.horizontalEntity)
   const [images, setImages] = useState([])
   const [titleImage, setTitleImage] = useState({ file: '', url: '' })
   const editor = useRef(null)
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(getEntity(period))
+    dispatch(getEntity(''))
   }, [])
 
-  // @ts-ignore
+  const joditConfig = useMemo(
+    () => ({
+      placeholder: 'Текст для вкладки about',
+      readonly: false
+    }),
+    []
+  )
+
   return (
     <div>
       <form>
@@ -61,9 +64,9 @@ const PeriodHorizontal = ({ period }: PeriodHorizontal) => {
                   label="номер"
                   variant="outlined"
                 />
-                {/*@ts-ignore*/}
                 <JoditEditor
-                  config={{ placeholder: 'Текст для вкладки about' }}
+                  //@ts-ignore
+                  config={joditConfig}
                   value={entity.about.text}
                   onChange={(value) => dispatch(setAboutText(value))}
                   ref={editor}
