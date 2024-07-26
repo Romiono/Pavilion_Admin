@@ -1,8 +1,7 @@
 import SimpleCard from '../ui/simpleCard/SimpleCard'
 import clsx from 'clsx'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import classes from './SingleImageForm.module.scss'
-import { useAppSelector } from '../../hooks/redux/useTypedRedux'
 
 interface SingleImageForm {
   image: {
@@ -14,16 +13,7 @@ interface SingleImageForm {
 
 const SingleImageForm = ({ image, setImage }: SingleImageForm) => {
   const [isDragging, setIsDragging] = useState(false)
-  const serverImage = useAppSelector((state) => state.horizontalEntity.entity.about.title.img)
   const inputRef = useRef<HTMLInputElement>(null)
-  useEffect(() => {
-    if (serverImage) {
-      setImage({
-        file: new URL(serverImage).origin,
-        url: serverImage
-      })
-    }
-  }, [])
 
   const onDragOverUploader = (e) => {
     e.preventDefault()

@@ -14,7 +14,7 @@ import {
   setText
 } from '../../../store/slices/verticalEntitySlice'
 import SimpleCard from '../../../components/ui/simpleCard/SimpleCard'
-import MultipleImageForm from '../../../components/multipleImageForm/MultipleImageForm'
+import MultipleImageForm, { IImages } from '../../../components/multipleImageForm/MultipleImageForm'
 import { TextField } from '@mui/material'
 import JoditEditor from 'jodit-react'
 import SingleImageForm from '../../../components/singleImageForm/SingleImageForm'
@@ -25,7 +25,7 @@ interface PeriodVertical {
 
 const PeriodVertical = ({ period }: PeriodVertical) => {
   const { entity, loading } = useAppSelector((state) => state.verticalEntity)
-  const [images, setImages] = useState([])
+  const [images, setImages] = useState<IImages[]>([])
   const [mainImage, setMainImage] = useState({ file: '', url: '' })
   const dispatch = useAppDispatch()
   const editor1 = useRef(null)
@@ -33,6 +33,20 @@ const PeriodVertical = ({ period }: PeriodVertical) => {
   const editor3 = useRef(null)
   useEffect(() => {
     dispatch(getEntity(period))
+    setImages(
+      entity.secondLevel.sources.about.images.map((item, index) => {
+        return {
+          name: index.toString(),
+          url: item
+        }
+      })
+    )
+    if (entity.secondLevel.sources.about.main.img) {
+      setMainImage({
+        file: new URL(entity.secondLevel.sources.about.main.img).origin,
+        url: entity.secondLevel.sources.about.main.img
+      })
+    }
   }, [])
 
   const joditConfig = useMemo(

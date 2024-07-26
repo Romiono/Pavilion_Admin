@@ -1,27 +1,41 @@
 import SimpleCard from '../../../components/ui/simpleCard/SimpleCard'
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux/useTypedRedux'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { getEntity } from '../../../store/slices/verticalEntitySlice'
 import classes from './PeriodHorizontal.module.scss'
 import { TextField } from '@mui/material'
-import MultipleImageForm from '../../../components/multipleImageForm/MultipleImageForm'
+import MultipleImageForm, { IImages } from '../../../components/multipleImageForm/MultipleImageForm'
 import JoditEditor from 'jodit-react'
 import {
   setAboutText,
   setAboutTitleName,
   setAboutTitleNumber,
-  setName
+  setName,
+  getEntity
 } from '../../../store/slices/horizontalEntitySlice'
 import SingleImageForm from '../../../components/singleImageForm/SingleImageForm'
 
 const PeriodHorizontal = () => {
   const { entity, loading } = useAppSelector((state) => state.horizontalEntity)
-  const [images, setImages] = useState([])
+  const [images, setImages] = useState<IImages[]>([])
   const [titleImage, setTitleImage] = useState({ file: '', url: '' })
   const editor = useRef(null)
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(getEntity(''))
+    dispatch(getEntity())
+    setImages(
+      entity.about.images.map((item, index) => {
+        return {
+          name: index.toString(),
+          url: item
+        }
+      })
+    )
+    if (entity.about.title.img) {
+      setTitleImage({
+        file: new URL(entity.about.title.img).origin,
+        url: entity.about.title.img
+      })
+    }
   }, [])
 
   const joditConfig = useMemo(

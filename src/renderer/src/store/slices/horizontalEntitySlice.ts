@@ -48,12 +48,12 @@ const initialState: initialState = {
   error: null
 }
 
-export const getEntity = createAsyncThunk<any, any>(
+export const getEntity = createAsyncThunk<any>(
   'horizontalEntity',
   // @ts-ignore
-  async (type, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const data = await axios.get(`https://localhost:8080/${type}`)
+      const data = await axios.get(`https://localhost:8080/`)
       return data
     } catch (error) {
       if (error instanceof AxiosError) {
