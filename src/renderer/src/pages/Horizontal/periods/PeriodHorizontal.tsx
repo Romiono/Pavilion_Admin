@@ -40,9 +40,6 @@ const PeriodHorizontal = () => {
             <h3>Основная информация</h3>
             <div className={classes.container__inputList}>
               <div className={classes.container__inputList__preview}>
-                {/*<SimpleCard width="full" variant='outlined' height='full' className={classes.container__inputList__preview__image}>*/}
-                {/*  <img className={classes.container__inputList__preview__img} src={entity.about.title.img} alt="превью периода" />*/}
-                {/*</SimpleCard>*/}
                 <SingleImageForm image={titleImage} setImage={setTitleImage} />
               </div>
               <div className={classes.container__inputList__inputs}>

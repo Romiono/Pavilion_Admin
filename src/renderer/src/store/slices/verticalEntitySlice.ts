@@ -84,7 +84,42 @@ export const getEntity = createAsyncThunk<any, any>(
 export const verticalEntitySlice = createSlice({
   name: 'verticalEntity',
   initialState,
-  reducers: {},
+  reducers: {
+    setEntity: (state, action) => {
+      const data: IVerticalEntity = action.payload
+      state.entity.id = data.id
+      state.entity.header = data.header
+      state.entity.text = data.text
+      state.entity.secondLevel
+    },
+    setHeaderTitle: (state, action) => {
+      state.entity.header.title = action.payload
+    },
+    setHeaderDescription: (state, action) => {
+      state.entity.header.description = action.payload
+    },
+    setText: (state, action) => {
+      state.entity.text = action.payload
+    },
+    setSecondLevelHeaderTitle: (state, action) => {
+      state.entity.secondLevel.header.title = action.payload
+    },
+    setSecondLevelHeaderDescription: (state, action) => {
+      state.entity.secondLevel.header.description = action.payload
+    },
+    setSecondLevelText: (state, action) => {
+      state.entity.secondLevel.text = action.payload
+    },
+    setSecondLevelSourcesAboutNumber: (state, action) => {
+      state.entity.secondLevel.sources.about.number = action.payload
+    },
+    setSecondLevelSourcesAboutText: (state, action) => {
+      state.entity.secondLevel.sources.about.text = action.payload
+    },
+    setSecondLevelSourcesAboutMainTitle: (state, action) => {
+      state.entity.secondLevel.sources.about.main.title = action.payload
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(getEntity.fulfilled, (state, action) => {
       state.entity = action.payload
@@ -106,5 +141,17 @@ export const verticalEntitySlice = createSlice({
   }
 })
 
-export const {} = verticalEntitySlice.actions
+export const {
+  setSecondLevelSourcesAboutMainTitle,
+  setSecondLevelSourcesAboutNumber,
+  setSecondLevelSourcesAboutText,
+  setSecondLevelHeaderTitle,
+  setSecondLevelHeaderDescription,
+  setHeaderTitle,
+  setSecondLevelText,
+  setHeaderDescription,
+  setText,
+  setEntity
+} = verticalEntitySlice.actions
+
 export default verticalEntitySlice.reducer
