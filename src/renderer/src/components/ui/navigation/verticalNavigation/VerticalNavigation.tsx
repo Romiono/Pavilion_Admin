@@ -117,7 +117,7 @@ const VerticalNavigation = () => {
             </ListItem>
           )}
           <Divider />
-          <NavLink to="vertical" className={classes.navlist__link}>
+          <NavLink to="vertical/first-period" className={classes.navlist__link}>
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
