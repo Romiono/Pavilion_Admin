@@ -37,7 +37,7 @@ const PeriodVertical = ({ period }: PeriodVertical) => {
 
   const joditConfig = useMemo(
     () => ({
-      readOnly: false
+      readonly: false
     }),
     []
   )
@@ -61,13 +61,11 @@ const PeriodVertical = ({ period }: PeriodVertical) => {
                 variant="outlined"
               />
               <JoditEditor
-                //@ts-ignore
                 config={joditConfig}
                 value={entity.text}
                 onChange={(value) => dispatch(setText(value))}
                 ref={editor1}
               />
-              {/*<TextField multiline value={entity.about.text} onChange={(e) => dispatch(setAboutText(e.target.value))}  label='текст' variant='outlined'/>*/}
             </div>
           </div>
         </SimpleCard>
@@ -88,13 +86,11 @@ const PeriodVertical = ({ period }: PeriodVertical) => {
                 variant="outlined"
               />
               <JoditEditor
-                //@ts-ignore
                 config={joditConfig}
                 value={entity.secondLevel.text}
                 onChange={(value) => dispatch(setSecondLevelText(value))}
                 ref={editor2}
               />
-              {/*<TextField multiline value={entity.about.text} onChange={(e) => dispatch(setAboutText(e.target.value))}  label='текст' variant='outlined'/>*/}
             </div>
           </div>
         </SimpleCard>
@@ -119,13 +115,11 @@ const PeriodVertical = ({ period }: PeriodVertical) => {
                 variant="outlined"
               />
               <JoditEditor
-                //@ts-ignore
                 config={joditConfig}
                 value={entity.secondLevel.sources.about.text}
                 onChange={(value) => dispatch(setSecondLevelSourcesAboutText(value))}
                 ref={editor3}
               />
-              {/*<TextField multiline value={entity.about.text} onChange={(e) => dispatch(setAboutText(e.target.value))}  label='текст' variant='outlined'/>*/}
             </div>
           </div>
         </SimpleCard>

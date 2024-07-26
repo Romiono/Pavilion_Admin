@@ -62,13 +62,11 @@ const PeriodHorizontal = () => {
                   variant="outlined"
                 />
                 <JoditEditor
-                  //@ts-ignore
                   config={joditConfig}
                   value={entity.about.text}
                   onChange={(value) => dispatch(setAboutText(value))}
                   ref={editor}
                 />
-                {/*<TextField multiline value={entity.about.text} onChange={(e) => dispatch(setAboutText(e.target.value))}  label='текст' variant='outlined'/>*/}
               </div>
             </div>
           </SimpleCard>
