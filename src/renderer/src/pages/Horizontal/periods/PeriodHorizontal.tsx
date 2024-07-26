@@ -13,6 +13,7 @@ import {
   getEntity
 } from '../../../store/slices/horizontalEntitySlice'
 import SingleImageForm from '../../../components/singleImageForm/SingleImageForm'
+import Spiner from '../../../components/ui/loader/Spiner'
 
 const PeriodHorizontal = () => {
   const { entity, loading } = useAppSelector((state) => state.horizontalEntity)
@@ -21,21 +22,23 @@ const PeriodHorizontal = () => {
   const editor = useRef(null)
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(getEntity())
-    setImages(
-      entity.about.images.map((item, index) => {
-        return {
-          name: index.toString(),
-          url: item
-        }
-      })
-    )
-    if (entity.about.title.img) {
-      setTitleImage({
-        file: new URL(entity.about.title.img).origin,
-        url: entity.about.title.img
-      })
-    }
+    dispatch(getEntity()).then(() => {
+      setImages(
+        entity.about.images.map((item, index) => {
+          return {
+            name: index.toString(),
+            url: item
+          }
+        })
+      )
+      if (entity.about.title.img) {
+        setTitleImage({
+          file: new URL(entity.about.title.img).origin,
+          url: entity.about.title.img
+        })
+      }
+      console.log('успешно')
+    })
   }, [])
 
   const joditConfig = useMemo(
@@ -103,7 +106,7 @@ const PeriodHorizontal = () => {
           </button>
         </div>
       </form>
-      {loading && <div>Loading...(временная заглушка)</div>}
+      {loading && <Spiner />}
     </div>
   )
 }

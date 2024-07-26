@@ -18,6 +18,7 @@ import MultipleImageForm, { IImages } from '../../../components/multipleImageFor
 import { TextField } from '@mui/material'
 import JoditEditor from 'jodit-react'
 import SingleImageForm from '../../../components/singleImageForm/SingleImageForm'
+import Spiner from '../../../components/ui/loader/Spiner'
 
 interface PeriodVertical {
   period: number
@@ -32,21 +33,23 @@ const PeriodVertical = ({ period }: PeriodVertical) => {
   const editor2 = useRef(null)
   const editor3 = useRef(null)
   useEffect(() => {
-    dispatch(getEntity(period))
-    setImages(
-      entity.secondLevel.sources.about.images.map((item, index) => {
-        return {
-          name: index.toString(),
-          url: item
-        }
-      })
-    )
-    if (entity.secondLevel.sources.about.main.img) {
-      setMainImage({
-        file: new URL(entity.secondLevel.sources.about.main.img).origin,
-        url: entity.secondLevel.sources.about.main.img
-      })
-    }
+    dispatch(getEntity(period)).then(() => {
+      setImages(
+        entity.secondLevel.sources.about.images.map((item, index) => {
+          return {
+            name: index.toString(),
+            url: item
+          }
+        })
+      )
+      if (entity.secondLevel.sources.about.main.img) {
+        setMainImage({
+          file: new URL(entity.secondLevel.sources.about.main.img).origin,
+          url: entity.secondLevel.sources.about.main.img
+        })
+      }
+      console.log('успешно')
+    })
   }, [])
 
   const joditConfig = useMemo(
@@ -155,7 +158,7 @@ const PeriodVertical = ({ period }: PeriodVertical) => {
           Сохранить измененияя
         </button>
       </div>
-      {loading && <div>Loading...(временная заглушка)</div>}
+      {loading && <Spiner />}
     </form>
   )
 }
