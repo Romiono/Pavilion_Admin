@@ -67,7 +67,7 @@ const initialState: initialState = {
 }
 
 export const getEntity = createAsyncThunk<any, any>(
-  'verticalEntity',
+  'verticalEntity/get',
   // @ts-ignore
   async (index, { rejectWithValue }) => {
     try {
@@ -75,7 +75,27 @@ export const getEntity = createAsyncThunk<any, any>(
       return data
     } catch (error) {
       if (error instanceof AxiosError) {
-        return rejectWithValue(error?.response?.data?.message)
+        return rejectWithValue(error.response?.data?.message)
+      }
+    }
+  }
+)
+
+export const postEntity = createAsyncThunk<any, any>(
+  'verticalEntity/post',
+  // @ts-ignore
+  async (data, { rejectWithValue, dispatch }) => {
+    const { entity, index } = data
+    try {
+      await axios.put(`${import.meta.env.VITE_BASE_URL_API}/horizontal/${index}`, entity, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      dispatch(getEntity(index))
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error.response?.data.message)
       }
     }
   }
@@ -135,7 +155,27 @@ export const verticalEntitySlice = createSlice({
       state.error = `${action.payload}`
       openNotification({
         type: 'error',
-        text: `${action.payload}`
+        text: action.payload ? `${action.payload}` : 'Ошибка'
+      })
+    })
+    builder.addCase(postEntity.fulfilled, (state) => {
+      state.loading = false
+      state.error = ''
+      openNotification({
+        type: 'success',
+        text: 'Данные вертикальной модели успешно обновлены'
+      })
+    })
+    builder.addCase(postEntity.pending, (state) => {
+      state.error = ''
+      state.loading = true
+    })
+    builder.addCase(postEntity.rejected, (state, action) => {
+      state.loading = false
+      state.error = `${action.payload}`
+      openNotification({
+        type: 'error',
+        text: action.payload ? `${action.payload}` : 'Ошибка'
       })
     })
   }

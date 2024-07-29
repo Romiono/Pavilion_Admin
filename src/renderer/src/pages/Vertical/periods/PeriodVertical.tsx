@@ -25,15 +25,13 @@ const PeriodVertical = () => {
   const { period } = useParams()
   const { entity, loading } = useAppSelector((state) => state.verticalEntity)
   const [images, setImages] = useState<IImages[]>([])
-  const [mainImage, setMainImage] = useState({ file: '', url: '' })
+  const [mainImage, setMainImage] = useState<IImages>({ name: '', url: '' })
   const dispatch = useAppDispatch()
   const editor1 = useRef(null)
   const editor2 = useRef(null)
   const editor3 = useRef(null)
   useEffect(() => {
-    // console.log(period)
     dispatch(getEntity(period)).then((res) => {
-      console.log(import.meta.env)
       if (getEntity.fulfilled.match(res)) {
         setImages(
           entity.secondLevel.sources.about.images.map((item) => {
@@ -44,7 +42,7 @@ const PeriodVertical = () => {
           })
         )
         setMainImage({
-          file: new URL(entity.secondLevel.sources.about.main.img).origin,
+          name: new URL(entity.secondLevel.sources.about.main.img).origin,
           url: entity.secondLevel.sources.about.main.img
         })
         console.log('успешно')

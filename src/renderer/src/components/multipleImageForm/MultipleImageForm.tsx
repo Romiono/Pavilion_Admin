@@ -6,12 +6,12 @@ import clsx from 'clsx'
 export interface IImages {
   name: string
   url: string
+  file?: File
 }
 
 interface MultipleImageForm {
   images: IImages[]
   setImages: (i) => void
-  multiple?: boolean
 }
 
 const MultipleImageForm = ({ images, setImages }: MultipleImageForm) => {
@@ -35,7 +35,8 @@ const MultipleImageForm = ({ images, setImages }: MultipleImageForm) => {
         setImages((prev) => [
           ...prev,
           {
-            ...files[i],
+            name: files[i].name,
+            file: files[i],
             url: URL.createObjectURL(files[i])
           }
         ])
@@ -68,7 +69,8 @@ const MultipleImageForm = ({ images, setImages }: MultipleImageForm) => {
         setImages((prev) => [
           ...prev,
           {
-            ...files[i],
+            name: files[i].name,
+            file: files[i],
             url: URL.createObjectURL(files[i])
           }
         ])

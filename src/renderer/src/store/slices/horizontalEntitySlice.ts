@@ -4,9 +4,6 @@ import openNotification from '../../helpers/notification'
 
 export interface IHorizontalEntity {
   id: string
-  // img: string, //константа
-  // x: number, //константа
-  // y: number, //константа
   name: string
   about: {
     title: {
@@ -16,14 +13,13 @@ export interface IHorizontalEntity {
     }
     text: string
     images: string[]
-    // background: string, //константа
   }
 }
 
 interface initialState {
   entity: IHorizontalEntity
   loading: boolean
-  error: string | null
+  error: string
 }
 
 const initialState: initialState = {
@@ -45,16 +41,35 @@ const initialState: initialState = {
     }
   },
   loading: false,
-  error: null
+  error: ''
 }
 
 export const getEntity = createAsyncThunk<any>(
-  'horizontalEntity',
+  'horizontalEntity/get',
   // @ts-ignore
   async (_, { rejectWithValue }) => {
     try {
       const data = await axios.get(`${import.meta.env.VITE_BASE_URL_API}/horizontal`)
       return data
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error.response?.data.message)
+      }
+    }
+  }
+)
+
+export const postEntity = createAsyncThunk<any, any>(
+  'horizontalEntity/post',
+  // @ts-ignore
+  async (data, { rejectWithValue, dispatch }) => {
+    try {
+      await axios.put(`${import.meta.env.VITE_BASE_URL_API}/horizontal`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      dispatch(getEntity())
     } catch (error) {
       if (error instanceof AxiosError) {
         return rejectWithValue(error.response?.data.message)
@@ -98,10 +113,10 @@ export const horizontalEntitySlice = createSlice({
     builder.addCase(getEntity.fulfilled, (state, action) => {
       state.entity = action.payload
       state.loading = false
-      state.error = null
+      state.error = ''
     })
     builder.addCase(getEntity.pending, (state) => {
-      state.error = null
+      state.error = ''
       state.loading = true
     })
     builder.addCase(getEntity.rejected, (state, action) => {
@@ -109,7 +124,27 @@ export const horizontalEntitySlice = createSlice({
       state.error = `${action.payload}`
       openNotification({
         type: 'error',
-        text: `Ошибка`
+        text: action.payload ? `${action.payload}` : 'Ошибка'
+      })
+    })
+    builder.addCase(postEntity.fulfilled, (state) => {
+      state.loading = false
+      state.error = ''
+      openNotification({
+        type: 'success',
+        text: 'Данные горизонтальной модели успешно обновлены'
+      })
+    })
+    builder.addCase(postEntity.pending, (state) => {
+      state.error = ''
+      state.loading = true
+    })
+    builder.addCase(postEntity.rejected, (state, action) => {
+      state.loading = false
+      state.error = `${action.payload}`
+      openNotification({
+        type: 'error',
+        text: action.payload ? `${action.payload}` : 'Ошибка'
       })
     })
   }

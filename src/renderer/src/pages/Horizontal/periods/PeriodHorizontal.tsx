@@ -10,7 +10,8 @@ import {
   setAboutTitleName,
   setAboutTitleNumber,
   setName,
-  getEntity
+  getEntity,
+  postEntity
 } from '../../../store/slices/horizontalEntitySlice'
 import SingleImageForm from '../../../components/singleImageForm/SingleImageForm'
 import Spiner from '../../../components/ui/loader/Spiner'
@@ -18,7 +19,7 @@ import Spiner from '../../../components/ui/loader/Spiner'
 const PeriodHorizontal = () => {
   const { entity, loading } = useAppSelector((state) => state.horizontalEntity)
   const [images, setImages] = useState<IImages[]>([])
-  const [titleImage, setTitleImage] = useState({ file: '', url: '' })
+  const [titleImage, setTitleImage] = useState<IImages>({ name: '', url: '' })
   const editor = useRef(null)
   const dispatch = useAppDispatch()
   useEffect(() => {
@@ -33,7 +34,7 @@ const PeriodHorizontal = () => {
           })
         )
         setTitleImage({
-          file: new URL(entity.about.title.img).origin,
+          name: new URL(entity.about.title.img).origin,
           url: entity.about.title.img
         })
         console.log('успешно')
@@ -47,6 +48,28 @@ const PeriodHorizontal = () => {
     }),
     []
   )
+
+  const setEntity = (e) => {
+    e.preventDefault
+    const data = new FormData()
+    data.append('Name', entity.name)
+    data.append('About.Text', entity.about.text)
+
+    titleImage.file
+      ? data.append('About.Title.Img[file]', titleImage.file)
+      : data.append('About.Title.Img[link]', titleImage.url)
+
+    data.append('About.Title.Name', entity.about.title.name)
+    data.append('About.Title.Number', entity.about.title.number)
+    images &&
+      images.forEach((item, index) => {
+        data.append(`About.Images[${index}][priority]`, `${index}`)
+        item.file
+          ? data.append(`About.Images[${index}][file]`, item.file)
+          : data.append(`About.Images[${index}][link]`, item.url)
+      })
+    dispatch(postEntity(data))
+  }
 
   return (
     <div>
@@ -100,7 +123,10 @@ const PeriodHorizontal = () => {
           >
             Отмена
           </button>
-          <button onClick={() => {}} className={classes.container__buttons__submitButton}>
+          <button
+            onClick={(e) => setEntity(e)}
+            className={classes.container__buttons__submitButton}
+          >
             Сохранить измененияя
           </button>
         </div>
