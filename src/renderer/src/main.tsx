@@ -24,20 +24,8 @@ const router = createHashRouter([
         element: <Vertical />,
         children: [
           {
-            path: 'first-period',
-            element: <PeriodVertical period={1} />
-          },
-          {
-            path: 'second-period',
-            element: <PeriodVertical period={2} />
-          },
-          {
-            path: 'third-period',
-            element: <PeriodVertical period={3} />
-          },
-          {
-            path: 'fourth-period',
-            element: <PeriodVertical period={4} />
+            path: ':period',
+            element: <PeriodVertical />
           }
         ]
       }

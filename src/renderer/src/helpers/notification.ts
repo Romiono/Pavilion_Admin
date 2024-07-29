@@ -5,8 +5,10 @@ type INotification = {
   text?: string
 }
 
-export const openNotification: (val: INotification) => void = (val) => {
+const openNotification: (val: INotification) => void = (val) => {
   toast(val.text, {
     type: val?.type || 'info'
   })
 }
+
+export default openNotification

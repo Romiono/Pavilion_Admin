@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
-import { openNotification } from '../../helpers/notification'
+import openNotification from '../../helpers/notification'
 
 export interface IHorizontalEntity {
   id: string
@@ -53,11 +53,11 @@ export const getEntity = createAsyncThunk<any>(
   // @ts-ignore
   async (_, { rejectWithValue }) => {
     try {
-      const data = await axios.get(`https://localhost:8080/`)
+      const data = await axios.get(`${import.meta.env.VITE_BASE_URL_API}/horizontal`)
       return data
     } catch (error) {
       if (error instanceof AxiosError) {
-        return rejectWithValue(error?.response?.data?.message)
+        return rejectWithValue(error.response?.data.message)
       }
     }
   }
@@ -109,7 +109,7 @@ export const horizontalEntitySlice = createSlice({
       state.error = `${action.payload}`
       openNotification({
         type: 'error',
-        text: `${action.payload}`
+        text: `Ошибка`
       })
     })
   }

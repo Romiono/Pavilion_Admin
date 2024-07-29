@@ -22,25 +22,24 @@ const PeriodHorizontal = () => {
   const editor = useRef(null)
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(getEntity()).then(() => {
-      setImages(
-        entity.about.images.map((item, index) => {
-          return {
-            name: index.toString(),
-            url: item
-          }
-        })
-      )
-      if (entity.about.title.img) {
+    dispatch(getEntity()).then((res) => {
+      if (getEntity.fulfilled.match(res)) {
+        setImages(
+          entity.about.images.map((item) => {
+            return {
+              name: new URL(item).origin,
+              url: item
+            }
+          })
+        )
         setTitleImage({
           file: new URL(entity.about.title.img).origin,
           url: entity.about.title.img
         })
+        console.log('успешно')
       }
-      console.log('успешно')
     })
   }, [])
-
   const joditConfig = useMemo(
     () => ({
       placeholder: 'Текст для вкладки about',

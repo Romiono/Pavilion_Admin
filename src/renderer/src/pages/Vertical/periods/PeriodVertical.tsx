@@ -19,12 +19,10 @@ import { TextField } from '@mui/material'
 import JoditEditor from 'jodit-react'
 import SingleImageForm from '../../../components/singleImageForm/SingleImageForm'
 import Spiner from '../../../components/ui/loader/Spiner'
+import { useParams } from 'react-router-dom'
 
-interface PeriodVertical {
-  period: number
-}
-
-const PeriodVertical = ({ period }: PeriodVertical) => {
+const PeriodVertical = () => {
+  const { period } = useParams()
   const { entity, loading } = useAppSelector((state) => state.verticalEntity)
   const [images, setImages] = useState<IImages[]>([])
   const [mainImage, setMainImage] = useState({ file: '', url: '' })
@@ -33,24 +31,28 @@ const PeriodVertical = ({ period }: PeriodVertical) => {
   const editor2 = useRef(null)
   const editor3 = useRef(null)
   useEffect(() => {
-    dispatch(getEntity(period)).then(() => {
-      setImages(
-        entity.secondLevel.sources.about.images.map((item, index) => {
-          return {
-            name: index.toString(),
-            url: item
-          }
-        })
-      )
-      if (entity.secondLevel.sources.about.main.img) {
+    // console.log(period)
+    dispatch(getEntity(period)).then((res) => {
+      console.log(import.meta.env)
+      if (getEntity.fulfilled.match(res)) {
+        setImages(
+          entity.secondLevel.sources.about.images.map((item) => {
+            return {
+              name: new URL(item).origin,
+              url: item
+            }
+          })
+        )
         setMainImage({
           file: new URL(entity.secondLevel.sources.about.main.img).origin,
           url: entity.secondLevel.sources.about.main.img
         })
+        console.log('успешно')
+      } else {
+        console.log('ошибка')
       }
-      console.log('успешно')
     })
-  }, [])
+  }, [period])
 
   const joditConfig = useMemo(
     () => ({

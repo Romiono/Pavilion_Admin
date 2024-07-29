@@ -14,8 +14,7 @@ import ListItemText from '@mui/material/ListItemText'
 import { PersonalVideo, Smartphone } from '@mui/icons-material'
 import { NavLink, Outlet } from 'react-router-dom'
 import classes from './VerticalNavigation.module.scss'
-// @ts-ignore
-// const styles = useVerticalNavStyles();
+
 const drawerWidth = 320
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -117,7 +116,7 @@ const VerticalNavigation = () => {
             </ListItem>
           )}
           <Divider />
-          <NavLink to="vertical/first-period" className={classes.navlist__link}>
+          <NavLink to="vertical/1" className={classes.navlist__link}>
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{

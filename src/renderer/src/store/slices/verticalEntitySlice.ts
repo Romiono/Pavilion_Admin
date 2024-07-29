@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
-import { openNotification } from '../../helpers/notification'
+import openNotification from '../../helpers/notification'
 
 export interface IVerticalEntity {
   id: string
@@ -69,9 +69,9 @@ const initialState: initialState = {
 export const getEntity = createAsyncThunk<any, any>(
   'verticalEntity',
   // @ts-ignore
-  async (_, { rejectWithValue }) => {
+  async (index, { rejectWithValue }) => {
     try {
-      const data = await axios.get(`https://localhost:8080`)
+      const data = await axios.get(`${import.meta.env.VITE_BASE_URL_API}/vertical/${index}`)
       return data
     } catch (error) {
       if (error instanceof AxiosError) {
