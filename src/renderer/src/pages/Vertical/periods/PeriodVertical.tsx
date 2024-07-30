@@ -76,15 +76,15 @@ const PeriodVertical = () => {
     data.append('SecondLevel.Sources.About.Main.Title', entity.secondLevel.sources.about.main.title)
 
     mainImage.file
-      ? data.append('SecondLevel.Sources.About.Main.Img[file]', mainImage.file)
-      : data.append('SecondLevel.Sources.About.Main.Img[link]', mainImage.url)
+      ? data.append('SecondLevel.Sources.About.Main.Img.file', mainImage.file)
+      : data.append('SecondLevel.Sources.About.Main.Img.link', mainImage.url)
 
     images &&
       images.forEach((item, index) => {
-        data.append(`SecondLevel.Sources.About.Images[${index}][priority]`, `${index}`)
+        data.append(`SecondLevel.Sources.About.Images[${index}].priority`, `${index}`)
         item.file
-          ? data.append(`SecondLevel.Sources.About.Images[${index}][file]`, item.file)
-          : data.append(`SecondLevel.Sources.About.Images[${index}][link]`, item.url)
+          ? data.append(`SecondLevel.Sources.About.Images[${index}].file`, item.file)
+          : data.append(`SecondLevel.Sources.About.Images[${index}].link`, item.url)
       })
     dispatch(postEntity({ entity: data, period }))
   }

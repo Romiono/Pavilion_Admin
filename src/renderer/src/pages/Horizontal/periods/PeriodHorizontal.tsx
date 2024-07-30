@@ -56,17 +56,17 @@ const PeriodHorizontal = () => {
     data.append('About.Text', entity.about.text)
 
     titleImage.file
-      ? data.append('About.Title.Img[file]', titleImage.file)
-      : data.append('About.Title.Img[link]', titleImage.url)
+      ? data.append('About.Title.Img.file', titleImage.file)
+      : data.append('About.Title.Img.link', titleImage.url)
 
     data.append('About.Title.Name', entity.about.title.name)
     data.append('About.Title.Number', entity.about.title.number)
     images &&
       images.forEach((item, index) => {
-        data.append(`About.Images[${index}][priority]`, `${index}`)
+        data.append(`About.Images[${index}].priority`, `${index}`)
         item.file
-          ? data.append(`About.Images[${index}][file]`, item.file)
-          : data.append(`About.Images[${index}][link]`, item.url)
+          ? data.append(`About.Images[${index}].file`, item.file)
+          : data.append(`About.Images[${index}].link`, item.url)
       })
     dispatch(postEntity(data))
   }
