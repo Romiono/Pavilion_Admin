@@ -69,10 +69,10 @@ const SingleImageForm = ({ image, setImage }: SingleImageForm) => {
         })}
       >
         {isDragging ? (
-          <p className={classes.container__dragArea__text}>Drop images</p>
+          <p className={classes.container__dragArea__text}>Drop image</p>
         ) : (
           <p className={classes.container__dragArea__text}>
-            Drag & drop images here or{' '}
+            Drag & drop image here or{' '}
             <span onClick={Browse} className={classes.container__dragArea__text__span}>
               Browse
             </span>

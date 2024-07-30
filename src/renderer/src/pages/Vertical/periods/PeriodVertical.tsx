@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux/useTypedRedux'
 import {
   getEntity,
+  postEntity,
   setHeaderDescription,
   setHeaderTitle,
   setSecondLevelHeaderDescription,
@@ -58,6 +59,35 @@ const PeriodVertical = () => {
     }),
     []
   )
+
+  const setEntity = (e) => {
+    e.preventDefault
+    const data = new FormData()
+    data.append('Text', entity.text)
+    data.append('Header.Title', entity.header.title)
+    data.append('Header.Description', entity.header.description)
+
+    data.append('SecondLevel.Header.Title', entity.secondLevel.header.title)
+    data.append('SecondLevel.Header.Description', entity.secondLevel.header.description)
+    data.append('SecondLevel.Text', entity.secondLevel.text)
+
+    data.append('SecondLevel.Sources.About.Number', entity.secondLevel.sources.about.number)
+    data.append('SecondLevel.Sources.About.Text', entity.secondLevel.sources.about.text)
+    data.append('SecondLevel.Sources.About.Main.Title', entity.secondLevel.sources.about.main.title)
+
+    mainImage.file
+      ? data.append('SecondLevel.Sources.About.Main.Img[file]', mainImage.file)
+      : data.append('SecondLevel.Sources.About.Main.Img[link]', mainImage.url)
+
+    images &&
+      images.forEach((item, index) => {
+        data.append(`SecondLevel.Sources.About.Images[${index}][priority]`, `${index}`)
+        item.file
+          ? data.append(`SecondLevel.Sources.About.Images[${index}][file]`, item.file)
+          : data.append(`SecondLevel.Sources.About.Images[${index}][link]`, item.url)
+      })
+    dispatch(postEntity({ entity: data, period }))
+  }
   return (
     <form>
       <div className={classes.container}>
@@ -149,12 +179,12 @@ const PeriodVertical = () => {
       </div>
       <div className={classes.container__buttons}>
         <button
-          onClick={() => dispatch(getEntity)}
+          onClick={() => dispatch(getEntity(period))}
           className={classes.container__buttons__cancelButton}
         >
           Отмена
         </button>
-        <button onClick={() => {}} className={classes.container__buttons__submitButton}>
+        <button onClick={(e) => setEntity(e)} className={classes.container__buttons__submitButton}>
           Сохранить измененияя
         </button>
       </div>

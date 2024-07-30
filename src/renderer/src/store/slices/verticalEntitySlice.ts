@@ -85,14 +85,14 @@ export const postEntity = createAsyncThunk<any, any>(
   'verticalEntity/post',
   // @ts-ignore
   async (data, { rejectWithValue, dispatch }) => {
-    const { entity, index } = data
+    const { entity, period } = data
     try {
-      await axios.put(`${import.meta.env.VITE_BASE_URL_API}/horizontal/${index}`, entity, {
+      await axios.put(`${import.meta.env.VITE_BASE_URL_API}/horizontal/${period}`, entity, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
-      dispatch(getEntity(index))
+      dispatch(getEntity(period))
     } catch (error) {
       if (error instanceof AxiosError) {
         return rejectWithValue(error.response?.data.message)
