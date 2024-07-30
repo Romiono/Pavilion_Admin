@@ -21,6 +21,7 @@ import JoditEditor from 'jodit-react'
 import SingleImageForm from '../../../components/singleImageForm/SingleImageForm'
 import Spiner from '../../../components/ui/loader/Spiner'
 import { useParams } from 'react-router-dom'
+import clsx from 'clsx'
 
 const PeriodVertical = () => {
   const { period } = useParams()
@@ -76,14 +77,14 @@ const PeriodVertical = () => {
     data.append('SecondLevel.Sources.About.Main.Title', entity.secondLevel.sources.about.main.title)
 
     mainImage.file
-      ? data.append('SecondLevel.Sources.About.Main.Img.file', mainImage.file)
+      ? data.append('SecondLevel.Sources.About.Main.Img.FromDataFile', mainImage.file)
       : data.append('SecondLevel.Sources.About.Main.Img.link', mainImage.url)
 
     images &&
       images.forEach((item, index) => {
         data.append(`SecondLevel.Sources.About.Images[${index}].priority`, `${index}`)
         item.file
-          ? data.append(`SecondLevel.Sources.About.Images[${index}].file`, item.file)
+          ? data.append(`SecondLevel.Sources.About.Images[${index}].FromDataFile`, item.file)
           : data.append(`SecondLevel.Sources.About.Images[${index}].link`, item.url)
       })
     dispatch(postEntity({ entity: data, period }))
@@ -180,11 +181,20 @@ const PeriodVertical = () => {
       <div className={classes.container__buttons}>
         <button
           onClick={() => dispatch(getEntity(period))}
-          className={classes.container__buttons__cancelButton}
+          className={clsx(classes.container__buttons__button, classes.cancelButton)}
         >
           Отмена
         </button>
-        <button onClick={(e) => setEntity(e)} className={classes.container__buttons__submitButton}>
+        <button
+          onClick={() => dispatch(getEntity(period))}
+          className={clsx(classes.container__buttons__button, classes.updateButton)}
+        >
+          Обновить данные
+        </button>
+        <button
+          onClick={(e) => setEntity(e)}
+          className={clsx(classes.container__buttons__button, classes.submitButton)}
+        >
           Сохранить измененияя
         </button>
       </div>

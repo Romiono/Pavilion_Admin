@@ -155,7 +155,7 @@ export const verticalEntitySlice = createSlice({
       state.error = `${action.payload}`
       openNotification({
         type: 'error',
-        text: action.payload ? `${action.payload}` : 'Ошибка'
+        text: action.payload ? `${action.payload}` : 'Не удалось получить данные'
       })
     })
     builder.addCase(postEntity.fulfilled, (state) => {
@@ -175,7 +175,7 @@ export const verticalEntitySlice = createSlice({
       state.error = `${action.payload}`
       openNotification({
         type: 'error',
-        text: action.payload ? `${action.payload}` : 'Ошибка'
+        text: action.payload ? `${action.payload}` : 'Не удалось обновить данные'
       })
     })
   }

@@ -47,30 +47,36 @@
     gap: 10px;
     justify-content: center;
     margin-top: 10px;
-    &__submitButton {
-      width: 300px;
+    &__button {
+      min-width: 200px;
+      max-width: 300px;
       border-radius: 5px;
       font-size: 15px;
+      line-height: 16px;
       color: white;
-      background-color: #5fb771;
       border: none;
       height: 50px;
       cursor: pointer;
-      &:active {
-        background-color: #327941;
+      &.submitButton {
+        color: white;
+        background-color: #5fb771;
+        &:active {
+          background-color: #327941;
+        }
       }
-    }
-    &__cancelButton {
-      width: 300px;
-      border-radius: 5px;
-      font-size: 15px;
-      color: white;
-      background-color: #c95a5a;
-      border: none;
-      height: 50px;
-      cursor: pointer;
-      &:active {
-        background-color: #8d3434;
+      &.updateButton {
+        color: white;
+        background-color: #5ac0c9;
+        &:active {
+          background-color: #348d8a;
+        }
+      }
+      &.cancelButton {
+        color: white;
+        background-color: #c95a5a;
+        &:active {
+          background-color: #8d3434;
+        }
       }
     }
   }

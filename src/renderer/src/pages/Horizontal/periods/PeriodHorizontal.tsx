@@ -15,6 +15,7 @@ import {
 } from '../../../store/slices/horizontalEntitySlice'
 import SingleImageForm from '../../../components/singleImageForm/SingleImageForm'
 import Spiner from '../../../components/ui/loader/Spiner'
+import clsx from 'clsx'
 
 const PeriodHorizontal = () => {
   const { entity, loading } = useAppSelector((state) => state.horizontalEntity)
@@ -56,7 +57,7 @@ const PeriodHorizontal = () => {
     data.append('About.Text', entity.about.text)
 
     titleImage.file
-      ? data.append('About.Title.Img.file', titleImage.file)
+      ? data.append('About.Title.Img.FromDataFile', titleImage.file)
       : data.append('About.Title.Img.link', titleImage.url)
 
     data.append('About.Title.Name', entity.about.title.name)
@@ -65,7 +66,7 @@ const PeriodHorizontal = () => {
       images.forEach((item, index) => {
         data.append(`About.Images[${index}].priority`, `${index}`)
         item.file
-          ? data.append(`About.Images[${index}].file`, item.file)
+          ? data.append(`About.Images[${index}].FromDataFile`, item.file)
           : data.append(`About.Images[${index}].link`, item.url)
       })
     dispatch(postEntity(data))
@@ -119,13 +120,19 @@ const PeriodHorizontal = () => {
         <div className={classes.container__buttons}>
           <button
             onClick={() => dispatch(getEntity())}
-            className={classes.container__buttons__cancelButton}
+            className={clsx(classes.container__buttons__button, classes.cancelButton)}
           >
             Отмена
           </button>
           <button
+            onClick={() => dispatch(getEntity())}
+            className={clsx(classes.container__buttons__button, classes.updateButton)}
+          >
+            Обновить данные
+          </button>
+          <button
             onClick={(e) => setEntity(e)}
-            className={classes.container__buttons__submitButton}
+            className={clsx(classes.container__buttons__button, classes.submitButton)}
           >
             Сохранить измененияя
           </button>
