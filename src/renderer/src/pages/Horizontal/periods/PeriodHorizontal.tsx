@@ -118,7 +118,7 @@ const PeriodHorizontal = () => {
         </div>
         <div className={classes.container__buttons}>
           <button
-            onClick={() => dispatch(getEntity)}
+            onClick={() => dispatch(getEntity())}
             className={classes.container__buttons__cancelButton}
           >
             Отмена
