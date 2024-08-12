@@ -1,0 +1,49 @@
+@import '../../styles/mixins';
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+
+  h3 {
+    @include desktop {
+      font-size: desktopVW(24);
+    }
+    @include small-desktop {
+      font-size: smallDesktopVW(24);
+    }
+  }
+
+  &__inputList {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    margin-top: 10px;
+
+    &__preview {
+      max-width: 100%;
+      height: 300px;
+      margin: 0;
+
+      &__image {
+        overflow: hidden;
+
+        &__img {
+          width: 100%;
+          height: 100%;
+          box-sizing: border-box;
+        }
+      }
+    }
+
+    &__inputs {
+      padding: 0 10px;
+      width: 100%;
+      //height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+}

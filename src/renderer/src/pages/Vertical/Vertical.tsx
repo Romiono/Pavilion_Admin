@@ -3,10 +3,10 @@ import { Outlet } from 'react-router-dom'
 
 const Vertical = () => {
   const path = [
-    { to: '1', label: 'Первый период', id: 0 },
-    { to: '2', label: 'Второй период', id: 1 },
-    { to: '3', label: 'Третий период', id: 2 },
-    { to: '4', label: 'Четвертый период', id: 3 }
+    { to: '0', label: 'Первый период', id: 0 },
+    { to: '1', label: 'Второй период', id: 1 },
+    { to: '2', label: 'Третий период', id: 2 },
+    { to: '3', label: 'Четвертый период', id: 3 }
   ]
 
   return (

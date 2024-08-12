@@ -18,30 +18,51 @@ import Spiner from '../../../components/ui/loader/Spiner'
 import clsx from 'clsx'
 
 const PeriodHorizontal = () => {
-  const { entity, loading } = useAppSelector((state) => state.horizontalEntity)
+  const { entity, loading, status } = useAppSelector((state) => state.horizontalEntity)
   const [images, setImages] = useState<IImages[]>([])
   const [titleImage, setTitleImage] = useState<IImages>({ name: '', url: '' })
   const editor = useRef(null)
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(getEntity()).then((res) => {
-      if (getEntity.fulfilled.match(res)) {
-        setImages(
-          entity.about.images.map((item) => {
-            return {
-              name: new URL(item).origin,
-              url: item
-            }
-          })
-        )
-        setTitleImage({
-          name: new URL(entity.about.title.img).origin,
-          url: entity.about.title.img
-        })
-        console.log('успешно')
-      }
-    })
+    dispatch(getEntity())
+    //   .then((res) => {
+    //   if (getEntity.fulfilled.match(res)) {
+    //     setImages(
+    //       entity.about.images.map((item) => {
+    //         return {
+    //           name: new URL(item).origin,
+    //           url: item
+    //         }
+    //       })
+    //     )
+    //     console.log(entity.about.title.img)
+    //     setTitleImage({
+    //       name: new URL(entity.about.title.img).origin,
+    //       url: entity.about.title.img
+    //     })
+    //     console.log('успешно')
+    //   }
+    // })
   }, [])
+
+  useEffect(() => {
+    if (status === 'succes') {
+      setImages(
+        entity.about.images.map((item) => {
+          return {
+            name: new URL(item).origin,
+            url: item
+          }
+        })
+      )
+      console.log(entity.about.title.img)
+      setTitleImage({
+        name: new URL(entity.about.title.img).origin,
+        url: entity.about.title.img
+      })
+      console.log('успешно')
+    }
+  }, [status])
   const joditConfig = useMemo(
     () => ({
       placeholder: 'Текст для вкладки about',
@@ -53,6 +74,7 @@ const PeriodHorizontal = () => {
   const setEntity = (e) => {
     e.preventDefault
     const data = new FormData()
+    data.append('Id', entity.id)
     data.append('Name', entity.name)
     data.append('About.Text', entity.about.text)
 

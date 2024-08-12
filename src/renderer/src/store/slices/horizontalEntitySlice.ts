@@ -20,6 +20,7 @@ interface initialState {
   entity: IHorizontalEntity
   loading: boolean
   error: string
+  status: string
 }
 
 const initialState: initialState = {
@@ -41,7 +42,8 @@ const initialState: initialState = {
     }
   },
   loading: false,
-  error: ''
+  error: '',
+  status: ''
 }
 
 export const getEntity = createAsyncThunk<any>(
@@ -49,7 +51,7 @@ export const getEntity = createAsyncThunk<any>(
   // @ts-ignore
   async (_, { rejectWithValue }) => {
     try {
-      const data = await axios.get(`${import.meta.env.VITE_BASE_URL_API}/horizontal`)
+      const data = await axios.get(`${import.meta.env.VITE_BASE_URL_API}/api/horisontal/33`)
       return data
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -64,7 +66,7 @@ export const postEntity = createAsyncThunk<any, any>(
   // @ts-ignore
   async (data, { rejectWithValue, dispatch }) => {
     try {
-      await axios.post(`${import.meta.env.VITE_BASE_URL_API}/horizontal`, data, {
+      await axios.post(`${import.meta.env.VITE_BASE_URL_API}/api/horisontal`, data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -111,13 +113,15 @@ export const horizontalEntitySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getEntity.fulfilled, (state, action) => {
-      state.entity = action.payload
+      state.entity = action.payload.data.data.value
       state.loading = false
       state.error = ''
+      state.status = 'succes'
     })
     builder.addCase(getEntity.pending, (state) => {
       state.error = ''
       state.loading = true
+      state.status = 'pending'
     })
     builder.addCase(getEntity.rejected, (state, action) => {
       state.loading = false
@@ -126,6 +130,7 @@ export const horizontalEntitySlice = createSlice({
         type: 'error',
         text: action.payload ? `${action.payload}` : 'Не удалось получить данные'
       })
+      state.status = ''
     })
     builder.addCase(postEntity.fulfilled, (state) => {
       state.loading = false
