@@ -11,6 +11,8 @@ import JoditEditor from 'jodit-react'
 import MultipleImageForm, { IImages } from '../multipleImageForm/MultipleImageForm'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux/useTypedRedux'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { postEntity } from '../../store/slices/horizontalEntitySlice'
+import clsx from 'clsx'
 
 interface SourceItem {
   index: number
@@ -38,14 +40,12 @@ const SourcePicker = ({ index }: SourceItem) => {
       setImages([
         ...entity.secondLevel.sources[index].about.images.map((item) => {
           return {
-            // name: new URL(item).origin,
             name: item,
             url: item
           }
         })
       ])
       setMainImage({
-        // name: new URL(entity.secondLevel.sources[index].about.main.img).origin,
         name: entity.secondLevel.sources[index].about.main.img,
         url: entity.secondLevel.sources[index].about.main.img
       })
@@ -56,48 +56,82 @@ const SourcePicker = ({ index }: SourceItem) => {
     }
   }, [status])
 
+  const setSource = (e) => {
+    e.preventDefault()
+    const data = new FormData()
+    data.append('Source.Index', index.toString())
+    mainImage.file
+      ? data.append('About.Title.Img.FromDataFile', mainImage.file)
+      : data.append('About.Title.Img.link', mainImage.url)
+
+    data.append('About.Title.Name', entity.secondLevel.sources[index].about.main.title)
+    data.append('About.Title.Number', entity.secondLevel.sources[index].about.number)
+    images &&
+      images.forEach((item, index) => {
+        data.append(`About.Images[${index}].priority`, `${index}`)
+        item.file
+          ? data.append(`About.Images[${index}].FromDataFile`, item.file)
+          : data.append(`About.Images[${index}].link`, item.url)
+      })
+    dispatch(postEntity(data))
+  }
+
   return (
-    <>
-      <SimpleCard>
-        <h3>О нас {index + 1}</h3>
-        <div className={classes.container__inputList}>
-          <div className={classes.container__inputList__inputs}>
-            <div className={classes.container__inputList__preview}>
-              <SingleImageForm image={mainImage} setImage={setMainImage} />
+    <form className={classes.form}>
+      <div className={classes.container}>
+        <SimpleCard>
+          <h3>О нас {index + 1}</h3>
+          <div className={classes.container__inputList}>
+            <div className={classes.container__inputList__inputs}>
+              <div className={classes.container__inputList__preview}>
+                <SingleImageForm image={mainImage} setImage={setMainImage} />
+              </div>
+              <TextField
+                value={entity.secondLevel.sources[index].about.number}
+                onChange={(e) =>
+                  dispatch(setSecondLevelSourcesAboutNumber({ index, data: e.target.value }))
+                }
+                label="Номер"
+                variant="outlined"
+                inputMode="tel"
+              />
+              <TextField
+                value={entity.secondLevel.sources[index].about.main.title}
+                onChange={(e) =>
+                  dispatch(setSecondLevelSourcesAboutMainTitle({ index, data: e.target.value }))
+                }
+                label="Заголовок"
+                variant="outlined"
+              />
+              <JoditEditor
+                config={joditConfig}
+                value={entity.secondLevel.sources[index].about.text}
+                onChange={(value) =>
+                  dispatch(setSecondLevelSourcesAboutText({ index, data: value }))
+                }
+                ref={editor}
+              />
             </div>
-            <TextField
-              value={entity.secondLevel.sources[index].about.number}
-              onChange={(e) =>
-                dispatch(setSecondLevelSourcesAboutNumber({ index, data: e.target.value }))
-              }
-              label="Номер"
-              variant="outlined"
-              inputMode="tel"
-            />
-            <TextField
-              value={entity.secondLevel.sources[index].about.main.title}
-              onChange={(e) =>
-                dispatch(setSecondLevelSourcesAboutMainTitle({ index, data: e.target.value }))
-              }
-              label="Заголовок"
-              variant="outlined"
-            />
-            <JoditEditor
-              config={joditConfig}
-              value={entity.secondLevel.sources[index].about.text}
-              onChange={(value) => dispatch(setSecondLevelSourcesAboutText({ index, data: value }))}
-              ref={editor}
-            />
           </div>
+        </SimpleCard>
+        <SimpleCard>
+          <h3>Галерея {index + 1}</h3>
+          <div className={classes.container__inputList}>
+            <MultipleImageForm images={images} setImages={setImages} />
+          </div>
+        </SimpleCard>
+      </div>
+      <div>
+        <div className={classes.container__buttons}>
+          <button
+            onClick={(e) => setSource(e)}
+            className={clsx(classes.container__buttons__button, classes.submitButton)}
+          >
+            Сохранить измененияя
+          </button>
         </div>
-      </SimpleCard>
-      <SimpleCard>
-        <h3>Галерея {index + 1}</h3>
-        <div className={classes.container__inputList}>
-          <MultipleImageForm images={images} setImages={setImages} />
-        </div>
-      </SimpleCard>
-    </>
+      </div>
+    </form>
   )
 }
 

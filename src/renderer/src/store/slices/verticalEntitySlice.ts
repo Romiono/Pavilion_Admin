@@ -93,7 +93,7 @@ export const postEntity = createAsyncThunk<any, any>(
   async (data, { rejectWithValue, dispatch }) => {
     const { entity, period } = data
     try {
-      await axios.post(`${import.meta.env.VITE_BASE_URL_API}/api/vertical/${period}`, entity, {
+      await axios.post(`${import.meta.env.VITE_BASE_URL_API}/api/vertical`, entity, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

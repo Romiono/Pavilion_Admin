@@ -74,7 +74,6 @@ const PeriodHorizontal = () => {
   const setEntity = (e) => {
     e.preventDefault
     const data = new FormData()
-    data.append('Id', entity.id)
     data.append('Name', entity.name)
     data.append('About.Text', entity.about.text)
 

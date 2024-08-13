@@ -1,6 +1,7 @@
 @import '../../../styles/mixins';
 
 .container {
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
@@ -58,6 +59,7 @@
       height: 50px;
       cursor: pointer;
       &.submitButton {
+        min-width: 100%;
         color: white;
         background-color: #5fb771;
         &:active {
@@ -80,4 +82,9 @@
       }
     }
   }
+}
+
+.source {
+  padding: 5px;
+  margin-top: 10px
 }

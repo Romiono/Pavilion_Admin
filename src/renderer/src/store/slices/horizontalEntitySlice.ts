@@ -51,7 +51,7 @@ export const getEntity = createAsyncThunk<any>(
   // @ts-ignore
   async (_, { rejectWithValue }) => {
     try {
-      const data = await axios.get(`${import.meta.env.VITE_BASE_URL_API}/api/horisontal/33`)
+      const data = await axios.get(`${import.meta.env.VITE_BASE_URL_API}/api/horisontal/0`)
       return data
     } catch (error) {
       if (error instanceof AxiosError) {

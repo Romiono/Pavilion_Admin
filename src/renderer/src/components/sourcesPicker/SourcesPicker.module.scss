@@ -1,10 +1,13 @@
 @import '../../styles/mixins';
 
-.container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+.form {
+  width: 100%;
+}
 
+.container {
+  display: flex;
+  gap: 10px;
+  width: 100%;
   h3 {
     @include desktop {
       font-size: desktopVW(24);
@@ -44,6 +47,46 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+    }
+  }
+  &__buttons {
+    //position: absolute;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+    &__button {
+      width: 100%;
+      //margin: 0 20px;
+      border-radius: 5px;
+      font-size: 15px;
+      line-height: 16px;
+      color: white;
+      border: none;
+      height: 40px;
+      cursor: pointer;
+      &.submitButton {
+        color: white;
+        background-color: #5fb771;
+        &:active {
+          background-color: #327941;
+        }
+      }
+      &.updateButton {
+        color: white;
+        background-color: #5ac0c9;
+        &:active {
+          background-color: #348d8a;
+        }
+      }
+      &.cancelButton {
+        color: white;
+        background-color: #c95a5a;
+        &:active {
+          background-color: #8d3434;
+        }
+      }
     }
   }
 }
