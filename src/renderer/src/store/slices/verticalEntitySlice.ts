@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
 import openNotification from '../../helpers/notification'
+import IAllEnttities from '../../types/IAllEntities'
 
 export interface IVerticalEntity {
   id: string
@@ -33,6 +34,7 @@ export interface IVerticalEntity {
 
 interface initialState {
   entity: IVerticalEntity
+  allEntities: IAllEnttities[]
   loading: boolean
   error: string
   status: string
@@ -67,18 +69,37 @@ const initialState: initialState = {
       text: ''
     }
   },
+  allEntities: [],
   loading: false,
   error: '',
   status: ''
 }
 
-export const getEntity = createAsyncThunk<any, any>(
+export const getAllVerticalEntities = createAsyncThunk<any>(
+  'verticalEntities/getAllEntities',
+  // @ts-ignore
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await axios.get(`${import.meta.env.VITE_BASE_URL_API}/api/vertical`)
+      return data
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error.response?.data.message)
+      }
+    }
+  }
+)
+
+export const getEntityById = createAsyncThunk<any, any>(
   'verticalEntity/get',
   // @ts-ignore
-  async (index, { rejectWithValue }) => {
+  async (data, { rejectWithValue }) => {
     try {
-      const data = await axios.get(`${import.meta.env.VITE_BASE_URL_API}/api/vertical/${index}`)
-      return data
+      const { period, id } = data
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL_API}/api/vertical/${id}/${period}`
+      )
+      return response
     } catch (error) {
       if (error instanceof AxiosError) {
         return rejectWithValue(error.response?.data?.message)
@@ -91,14 +112,18 @@ export const postEntity = createAsyncThunk<any, any>(
   'verticalEntity/post',
   // @ts-ignore
   async (data, { rejectWithValue, dispatch }) => {
-    const { entity, period } = data
+    const { entity, period, id } = data
     try {
-      await axios.post(`${import.meta.env.VITE_BASE_URL_API}/api/vertical`, entity, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      await axios.post(
+        `${import.meta.env.VITE_BASE_URL_API}/api/vertical/${id}/${period}`,
+        entity,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         }
-      })
-      dispatch(getEntity(period))
+      )
+      dispatch(getEntityById(period))
     } catch (error) {
       if (error instanceof AxiosError) {
         return rejectWithValue(error.response?.data.message)
@@ -147,18 +172,28 @@ export const verticalEntitySlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(getEntity.fulfilled, (state, action) => {
+    builder.addCase(getAllVerticalEntities.fulfilled, (state, action) => {
+      state.allEntities = action.payload.data.data.value
+    })
+    builder.addCase(getAllVerticalEntities.rejected, (state, action) => {
+      state.error = `${action.payload}`
+      openNotification({
+        type: 'error',
+        text: action.payload ? `${action.payload}` : 'Не удалось получить данные'
+      })
+    })
+    builder.addCase(getEntityById.fulfilled, (state, action) => {
       state.entity = action.payload.data.data.value
       state.loading = false
       state.error = ''
       state.status = 'succes'
     })
-    builder.addCase(getEntity.pending, (state) => {
+    builder.addCase(getEntityById.pending, (state) => {
       state.error = ''
       state.loading = true
       state.status = 'pending'
     })
-    builder.addCase(getEntity.rejected, (state, action) => {
+    builder.addCase(getEntityById.rejected, (state, action) => {
       state.loading = false
       state.error = `${action.payload}`
       openNotification({

@@ -2,7 +2,7 @@ import classes from './PeriodVertical.module.scss'
 import { useEffect, useMemo, useRef } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux/useTypedRedux'
 import {
-  getEntity,
+  getEntityById,
   postEntity,
   setHeaderDescription,
   setHeaderTitle,
@@ -22,13 +22,13 @@ import clsx from 'clsx'
 import SourcePicker from '@renderer/components/sourcesPicker/SourcePicker'
 
 const PeriodVertical = () => {
-  const { period } = useParams()
+  const { period, id } = useParams()
   const { entity, loading } = useAppSelector((state) => state.verticalEntity)
   const dispatch = useAppDispatch()
   const editor1 = useRef(null)
   const editor2 = useRef(null)
   useEffect(() => {
-    dispatch(getEntity(period))
+    dispatch(getEntityById({ period, id }))
   }, [period])
 
   const joditConfig = useMemo(
@@ -37,6 +37,10 @@ const PeriodVertical = () => {
     }),
     []
   )
+
+  useEffect(() => {
+    console.log(period)
+  }, [])
 
   const setEntity = (e) => {
     e.preventDefault
@@ -50,7 +54,7 @@ const PeriodVertical = () => {
     data.append('SecondLevel.Header.Description', entity.secondLevel.header.description)
     data.append('SecondLevel.Text', entity.secondLevel.text)
 
-    dispatch(postEntity({ entity: data, period }))
+    dispatch(postEntity({ entity: data, period, id }))
   }
   return (
     <form>
@@ -123,13 +127,13 @@ const PeriodVertical = () => {
       </SimpleCard>
       <div className={classes.container__buttons}>
         <button
-          onClick={() => dispatch(getEntity(period))}
+          onClick={() => dispatch(getEntityById(period))}
           className={clsx(classes.container__buttons__button, classes.cancelButton)}
         >
           Отмена
         </button>
         <button
-          onClick={() => dispatch(getEntity(period))}
+          onClick={() => dispatch(getEntityById(period))}
           className={clsx(classes.container__buttons__button, classes.updateButton)}
         >
           Обновить данные

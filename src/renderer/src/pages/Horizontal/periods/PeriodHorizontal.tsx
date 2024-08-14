@@ -10,40 +10,24 @@ import {
   setAboutTitleName,
   setAboutTitleNumber,
   setName,
-  getEntity,
-  postEntity
+  postEntity,
+  getEntityById
 } from '../../../store/slices/horizontalEntitySlice'
 import SingleImageForm from '../../../components/singleImageForm/SingleImageForm'
 import Spiner from '../../../components/ui/loader/Spiner'
 import clsx from 'clsx'
+import { useParams } from 'react-router-dom'
 
 const PeriodHorizontal = () => {
+  const { id } = useParams()
   const { entity, loading, status } = useAppSelector((state) => state.horizontalEntity)
   const [images, setImages] = useState<IImages[]>([])
   const [titleImage, setTitleImage] = useState<IImages>({ name: '', url: '' })
   const editor = useRef(null)
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(getEntity())
-    //   .then((res) => {
-    //   if (getEntity.fulfilled.match(res)) {
-    //     setImages(
-    //       entity.about.images.map((item) => {
-    //         return {
-    //           name: new URL(item).origin,
-    //           url: item
-    //         }
-    //       })
-    //     )
-    //     console.log(entity.about.title.img)
-    //     setTitleImage({
-    //       name: new URL(entity.about.title.img).origin,
-    //       url: entity.about.title.img
-    //     })
-    //     console.log('успешно')
-    //   }
-    // })
-  }, [])
+    dispatch(getEntityById(id))
+  }, [id])
 
   useEffect(() => {
     if (status === 'succes') {
@@ -140,13 +124,13 @@ const PeriodHorizontal = () => {
         </div>
         <div className={classes.container__buttons}>
           <button
-            onClick={() => dispatch(getEntity())}
+            onClick={() => dispatch(getEntityById(id))}
             className={clsx(classes.container__buttons__button, classes.cancelButton)}
           >
             Отмена
           </button>
           <button
-            onClick={() => dispatch(getEntity())}
+            onClick={() => dispatch(getEntityById(id))}
             className={clsx(classes.container__buttons__button, classes.updateButton)}
           >
             Обновить данные

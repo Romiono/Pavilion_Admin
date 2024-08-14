@@ -16,11 +16,11 @@ const router = createHashRouter([
     element: <App />,
     children: [
       {
-        path: 'horizontal',
+        path: 'horizontal/:id',
         element: <Horizontal />
       },
       {
-        path: 'vertical',
+        path: 'vertical/:id',
         element: <Vertical />,
         children: [
           {

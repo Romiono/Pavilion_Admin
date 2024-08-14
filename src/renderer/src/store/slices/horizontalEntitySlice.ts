@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
 import openNotification from '../../helpers/notification'
+import IAllEnttities from '../../types/IAllEntities'
 
 export interface IHorizontalEntity {
   id: string
@@ -18,6 +19,7 @@ export interface IHorizontalEntity {
 
 interface initialState {
   entity: IHorizontalEntity
+  allEntities: IAllEnttities[]
   loading: boolean
   error: string
   status: string
@@ -41,17 +43,32 @@ const initialState: initialState = {
       // background: '', //константа
     }
   },
+  allEntities: [],
   loading: false,
   error: '',
   status: ''
 }
-
-export const getEntity = createAsyncThunk<any>(
-  'horizontalEntity/get',
+export const getAllHorizontalEntities = createAsyncThunk<any, any>(
+  'horizontalEntities/getAllEntities',
   // @ts-ignore
   async (_, { rejectWithValue }) => {
     try {
-      const data = await axios.get(`${import.meta.env.VITE_BASE_URL_API}/api/horisontal/0`)
+      const data = await axios.get(`${import.meta.env.VITE_BASE_URL_API}/api/horisontal`)
+      return data
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error.response?.data.message)
+      }
+    }
+  }
+)
+
+export const getEntityById = createAsyncThunk<any, any>(
+  'horizontalEntity/get',
+  // @ts-ignore
+  async (index, { rejectWithValue }) => {
+    try {
+      const data = await axios.get(`${import.meta.env.VITE_BASE_URL_API}/api/horisontal/${index}`)
       return data
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -65,13 +82,14 @@ export const postEntity = createAsyncThunk<any, any>(
   'horizontalEntity/post',
   // @ts-ignore
   async (data, { rejectWithValue, dispatch }) => {
+    const { entity, index } = data
     try {
-      await axios.post(`${import.meta.env.VITE_BASE_URL_API}/api/horisontal`, data, {
+      await axios.post(`${import.meta.env.VITE_BASE_URL_API}/api/horisontal${index}`, entity, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
-      dispatch(getEntity())
+      dispatch(getEntityById(index))
     } catch (error) {
       if (error instanceof AxiosError) {
         return rejectWithValue(error.response?.data.message)
@@ -112,18 +130,28 @@ export const horizontalEntitySlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(getEntity.fulfilled, (state, action) => {
+    builder.addCase(getAllHorizontalEntities.fulfilled, (state, action) => {
+      state.allEntities = action.payload.data.data.value
+    })
+    builder.addCase(getAllHorizontalEntities.rejected, (state, action) => {
+      state.error = `${action.payload}`
+      openNotification({
+        type: 'error',
+        text: action.payload ? `${action.payload}` : 'Не удалось получить данные'
+      })
+    })
+    builder.addCase(getEntityById.fulfilled, (state, action) => {
       state.entity = action.payload.data.data.value
       state.loading = false
       state.error = ''
       state.status = 'succes'
     })
-    builder.addCase(getEntity.pending, (state) => {
+    builder.addCase(getEntityById.pending, (state) => {
       state.error = ''
       state.loading = true
       state.status = 'pending'
     })
-    builder.addCase(getEntity.rejected, (state, action) => {
+    builder.addCase(getEntityById.rejected, (state, action) => {
       state.loading = false
       state.error = `${action.payload}`
       openNotification({
