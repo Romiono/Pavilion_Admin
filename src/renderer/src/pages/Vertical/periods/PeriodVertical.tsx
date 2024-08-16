@@ -38,21 +38,17 @@ const PeriodVertical = () => {
     []
   )
 
-  useEffect(() => {
-    console.log(period)
-  }, [])
-
   const setEntity = (e) => {
-    e.preventDefault
+    e.preventDefault()
     const data = new FormData()
-    data.append('Id', period as string)
-    data.append('Text', entity.text)
-    data.append('Header.Title', entity.header.title)
-    data.append('Header.Description', entity.header.description)
+    data.append('Id', entity.id.toString())
+    data.append('Text', entity.text || '')
+    data.append('Header.Title', entity.header.title || '')
+    data.append('Header.Description', entity.header.description || '')
 
-    data.append('SecondLevel.Header.Title', entity.secondLevel.header.title)
-    data.append('SecondLevel.Header.Description', entity.secondLevel.header.description)
-    data.append('SecondLevel.Text', entity.secondLevel.text)
+    data.append('SecondLevel.Header.Title', entity.secondLevel.header.title || '')
+    data.append('SecondLevel.Header.Description', entity.secondLevel.header.description || '')
+    data.append('SecondLevel.Text', entity.secondLevel.text || '')
 
     dispatch(postEntity({ entity: data, period, id }))
   }
@@ -113,27 +109,37 @@ const PeriodVertical = () => {
         </div>
         <div className={classes.container__buttons}>
           <button
-            onClick={(e) => setEntity(e)}
+            onClick={(e) => {
+              e.preventDefault()
+              setEntity(e)
+            }}
             className={clsx(classes.container__buttons__button, classes.submitButton)}
           >
             Сохранить измененияя
           </button>
         </div>
       </SimpleCard>
-      <SimpleCard className={classes.source} variant={'outlined'}>
-        {entity.secondLevel.sources.map((_, index) => (
+
+      {entity.secondLevel.sources.map((_, index) => (
+        <SimpleCard className={classes.source} variant={'outlined'}>
           <SourcePicker index={index} key={index} />
-        ))}
-      </SimpleCard>
+        </SimpleCard>
+      ))}
       <div className={classes.container__buttons}>
         <button
-          onClick={() => dispatch(getEntityById(period))}
+          onClick={(e) => {
+            e.preventDefault()
+            dispatch(getEntityById(period))
+          }}
           className={clsx(classes.container__buttons__button, classes.cancelButton)}
         >
           Отмена
         </button>
         <button
-          onClick={() => dispatch(getEntityById(period))}
+          onClick={(e) => {
+            e.preventDefault()
+            dispatch(getEntityById(period))
+          }}
           className={clsx(classes.container__buttons__button, classes.updateButton)}
         >
           Обновить данные

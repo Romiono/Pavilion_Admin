@@ -3,27 +3,31 @@ import SimpleCard from '../ui/simpleCard/SimpleCard'
 import SingleImageForm from '../singleImageForm/SingleImageForm'
 import { TextField } from '@mui/material'
 import {
+  getEntityById,
   setSecondLevelSourcesAboutMainTitle,
   setSecondLevelSourcesAboutNumber,
   setSecondLevelSourcesAboutText
 } from '../../store/slices/verticalEntitySlice'
 import JoditEditor from 'jodit-react'
-import MultipleImageForm, { IImages } from '../multipleImageForm/MultipleImageForm'
+import MultipleImageForm, { IMultiplePeackerImages } from '../multipleImageForm/MultipleImageForm'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux/useTypedRedux'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { postEntity } from '../../store/slices/horizontalEntitySlice'
 import clsx from 'clsx'
+import IImages from '../../types/IImages'
+import { useParams } from 'react-router-dom'
 
 interface SourceItem {
   index: number
 }
 
 const SourcePicker = ({ index }: SourceItem) => {
+  const { id, period } = useParams()
   const { entity, status } = useAppSelector((state) => state.verticalEntity)
   const dispatch = useAppDispatch()
 
   const [images, setImages] = useState<IImages[]>([])
-  const [mainImage, setMainImage] = useState<IImages>({ name: '', url: '' })
+  const [mainImage, setMainImage] = useState<IMultiplePeackerImages>({ name: '', link: '' })
 
   const joditConfig = useMemo(
     () => ({
@@ -40,40 +44,47 @@ const SourcePicker = ({ index }: SourceItem) => {
       setImages([
         ...entity.secondLevel.sources[index].about.images.map((item) => {
           return {
-            name: item,
-            url: item
+            name: item.name,
+            link: item.link,
+            id: item.id,
+            priority: item.id
           }
         })
       ])
       setMainImage({
         name: entity.secondLevel.sources[index].about.main.img,
-        url: entity.secondLevel.sources[index].about.main.img
+        link: entity.secondLevel.sources[index].about.main.img
       })
       console.log('успешно')
     } else {
       setImages([])
-      setMainImage({ name: '', url: '' })
+      setMainImage({ name: '', link: '' })
     }
   }, [status])
 
   const setSource = (e) => {
     e.preventDefault()
     const data = new FormData()
+    data.append('Id', entity.secondLevel.sources[index].id.toString())
     data.append('Source.Index', index.toString())
     mainImage.file
-      ? data.append('About.Title.Img.FromDataFile', mainImage.file)
-      : data.append('About.Title.Img.link', mainImage.url)
+      ? data.append('About.Main.Img.FromDataFile', mainImage.file)
+      : data.append('About.Main.Img.link', mainImage.link || 'nothing')
 
-    data.append('About.Title.Name', entity.secondLevel.sources[index].about.main.title)
-    data.append('About.Title.Number', entity.secondLevel.sources[index].about.number)
+    data.append('About.Main.Title', entity.secondLevel.sources[index].about.main.title || '')
+    data.append('About.Number', entity.secondLevel.sources[index].about.number || '')
+    data.append('About.Text', entity.secondLevel.sources[index].about.text || '')
     images &&
       images.forEach((item, index) => {
         data.append(`About.Images[${index}].priority`, `${index}`)
         item.file
           ? data.append(`About.Images[${index}].FromDataFile`, item.file)
-          : data.append(`About.Images[${index}].link`, item.url)
+          : data.append(`About.Images[${index}].Link`, item.link)
+        item.id && data.append(`About.Images[${index}].Id`, item.id.toString())
       })
-    dispatch(postEntity(data))
+    dispatch(postEntity({ entity: data, index: id })).then(() => {
+      dispatch(getEntityById({ period, id }))
+    })
   }
 
   return (

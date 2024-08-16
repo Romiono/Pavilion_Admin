@@ -6,7 +6,7 @@ import classes from './SingleImageForm.module.scss'
 interface SingleImageForm {
   image: {
     name: string
-    url: string
+    link: string
     file?: File
   }
   setImage: (image) => void
@@ -33,7 +33,7 @@ const SingleImageForm = ({ image, setImage }: SingleImageForm) => {
     setImage({
       name: file[0].name,
       file: file[0],
-      url: URL.createObjectURL(file[0])
+      link: URL.createObjectURL(file[0])
     })
   }
 
@@ -48,7 +48,7 @@ const SingleImageForm = ({ image, setImage }: SingleImageForm) => {
     setImage({
       name: file.name,
       file: file,
-      url: URL.createObjectURL(file)
+      link: URL.createObjectURL(file)
     })
   }
 
@@ -59,7 +59,7 @@ const SingleImageForm = ({ image, setImage }: SingleImageForm) => {
       onDragLeave={onDragLeaveUploader}
       onDrop={onDropUploader}
     >
-      <img src={image.url} alt={image.name} className={classes.container__dragArea__bgImage} />
+      <img src={image.link} alt={image.name} className={classes.container__dragArea__bgImage} />
       <SimpleCard
         variant="outlined"
         height="full"

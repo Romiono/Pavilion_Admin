@@ -3,14 +3,16 @@ import SimpleCard from '../ui/simpleCard/SimpleCard'
 import { useRef, useState } from 'react'
 import clsx from 'clsx'
 
-export interface IImages {
+export interface IMultiplePeackerImages {
+  priority?: any
+  id?: any
+  link: any
   name: string
-  url: string
   file?: File
 }
 
 interface MultipleImageForm {
-  images: IImages[]
+  images: IMultiplePeackerImages[]
   setImages: (i) => void
 }
 
@@ -37,7 +39,7 @@ const MultipleImageForm = ({ images, setImages }: MultipleImageForm) => {
           {
             name: files[i].name,
             file: files[i],
-            url: URL.createObjectURL(files[i])
+            link: URL.createObjectURL(files[i])
           }
         ])
       }
@@ -45,7 +47,7 @@ const MultipleImageForm = ({ images, setImages }: MultipleImageForm) => {
   }
 
   const deleteImage = (url) => {
-    setImages((prev) => prev.filter((item) => item.url !== url))
+    setImages((prev) => prev.filter((item) => item.link !== url))
   }
 
   const onDragOverUploader = (e) => {
@@ -71,7 +73,7 @@ const MultipleImageForm = ({ images, setImages }: MultipleImageForm) => {
           {
             name: files[i].name,
             file: files[i],
-            url: URL.createObjectURL(files[i])
+            link: URL.createObjectURL(files[i])
           }
         ])
       }
@@ -129,18 +131,18 @@ const MultipleImageForm = ({ images, setImages }: MultipleImageForm) => {
         </SimpleCard>
       </div>
       <div className={classes.container__images}>
-        {images?.map((image) => (
+        {images?.map((image, index) => (
           <div
-            key={image.name}
+            key={index}
             className={classes.container__images__image}
             draggable={true}
             onDragStart={() => onDragStartImages(image)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => onDropImages(e, image)}
           >
-            <span onClick={() => deleteImage(image.url)}>&times;</span>
+            <span onClick={() => deleteImage(image.link)}>&times;</span>
             <img
-              src={image.url}
+              src={image.link}
               alt={image.name}
               className={classes.container__images__image__img}
             />

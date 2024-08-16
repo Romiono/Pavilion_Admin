@@ -8,6 +8,13 @@ An Electron application with React and TypeScript
 
 ## Project Setup
 
+### Configuration
+
+```dotenv
+#insert .env file with beckend base url, like this:
+VITE_BASE_URL_API=http://192.168.222.235:2031
+```
+
 ### Install
 
 ```bash

@@ -3,7 +3,9 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux/useTypedRed
 import { useEffect, useMemo, useRef, useState } from 'react'
 import classes from './PeriodHorizontal.module.scss'
 import { TextField } from '@mui/material'
-import MultipleImageForm, { IImages } from '../../../components/multipleImageForm/MultipleImageForm'
+import MultipleImageForm, {
+  IMultiplePeackerImages
+} from '../../../components/multipleImageForm/MultipleImageForm'
 import JoditEditor from 'jodit-react'
 import {
   setAboutText,
@@ -17,12 +19,14 @@ import SingleImageForm from '../../../components/singleImageForm/SingleImageForm
 import Spiner from '../../../components/ui/loader/Spiner'
 import clsx from 'clsx'
 import { useParams } from 'react-router-dom'
+import IImages from '../../../types/IImages'
 
 const PeriodHorizontal = () => {
   const { id } = useParams()
+
   const { entity, loading, status } = useAppSelector((state) => state.horizontalEntity)
   const [images, setImages] = useState<IImages[]>([])
-  const [titleImage, setTitleImage] = useState<IImages>({ name: '', url: '' })
+  const [titleImage, setTitleImage] = useState<IMultiplePeackerImages>({ name: '', link: '' })
   const editor = useRef(null)
   const dispatch = useAppDispatch()
   useEffect(() => {
@@ -34,15 +38,17 @@ const PeriodHorizontal = () => {
       setImages(
         entity.about.images.map((item) => {
           return {
-            name: new URL(item).origin,
-            url: item
+            name: item.name,
+            link: item.link,
+            id: item.id,
+            priority: item.priority
           }
         })
       )
       console.log(entity.about.title.img)
       setTitleImage({
-        name: new URL(entity.about.title.img).origin,
-        url: entity.about.title.img
+        name: entity.about.title.img,
+        link: entity.about.title.img
       })
       console.log('успешно')
     }
@@ -56,25 +62,27 @@ const PeriodHorizontal = () => {
   )
 
   const setEntity = (e) => {
-    e.preventDefault
+    e.preventDefault()
     const data = new FormData()
-    data.append('Name', entity.name)
-    data.append('About.Text', entity.about.text)
+    data.append('Id', entity.id.toString())
+    data.append('Name', entity.name || '')
+    data.append('About.Text', entity.about.text || '')
 
     titleImage.file
       ? data.append('About.Title.Img.FromDataFile', titleImage.file)
-      : data.append('About.Title.Img.link', titleImage.url)
+      : data.append('About.Title.Img.link', titleImage.link || '')
 
-    data.append('About.Title.Name', entity.about.title.name)
-    data.append('About.Title.Number', entity.about.title.number)
+    data.append('About.Title.Name', entity.about.title.name || '')
+    data.append('About.Title.Number', entity.about.title.number || '')
     images &&
       images.forEach((item, index) => {
         data.append(`About.Images[${index}].priority`, `${index}`)
         item.file
           ? data.append(`About.Images[${index}].FromDataFile`, item.file)
-          : data.append(`About.Images[${index}].link`, item.url)
+          : data.append(`About.Images[${index}].link`, item.link || '')
+        item.id && data.append(`About.Images[${index}].Id`, item.id.toString())
       })
-    dispatch(postEntity(data))
+    dispatch(postEntity({ entity: data, index: id }))
   }
 
   return (
@@ -124,13 +132,19 @@ const PeriodHorizontal = () => {
         </div>
         <div className={classes.container__buttons}>
           <button
-            onClick={() => dispatch(getEntityById(id))}
+            onClick={(e) => {
+              e.preventDefault()
+              dispatch(getEntityById(id))
+            }}
             className={clsx(classes.container__buttons__button, classes.cancelButton)}
           >
             Отмена
           </button>
           <button
-            onClick={() => dispatch(getEntityById(id))}
+            onClick={(e) => {
+              e.preventDefault()
+              dispatch(getEntityById(id))
+            }}
             className={clsx(classes.container__buttons__button, classes.updateButton)}
           >
             Обновить данные

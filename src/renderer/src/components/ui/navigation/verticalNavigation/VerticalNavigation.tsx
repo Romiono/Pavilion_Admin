@@ -11,11 +11,11 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
-import { ExpandLess, ExpandMore, PersonalVideo, Smartphone } from '@mui/icons-material'
+import { Cached, ExpandLess, ExpandMore, PersonalVideo, Smartphone } from '@mui/icons-material'
 import { NavLink, Outlet } from 'react-router-dom'
 import classes from './VerticalNavigation.module.scss'
 import { Collapse } from '@mui/material'
-import { useAppDispatch } from '../../../../hooks/redux/useTypedRedux'
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux/useTypedRedux'
 import { getAllHorizontalEntities } from '../../../../store/slices/horizontalEntitySlice'
 import { getAllVerticalEntities } from '../../../../store/slices/verticalEntitySlice'
 import clsx from 'clsx'
@@ -64,8 +64,8 @@ const VerticalNavigation = () => {
   const [openHorisontal, setOpenHorizontal] = useState(false)
   const [openVertical, setOpenVertical] = useState(false)
   const [selectedPage, setSelectedPage] = useState(0)
-  // const allHorizontalEntities = useAppSelector((state) => state.horizontalEntity.allEntities)
-  // const allVrticalEntities = useAppSelector((state) => state.verticalEntity.allEntities)
+  const allHorizontalEntities = useAppSelector((state) => state.horizontalEntity.allEntities)
+  const allVrticalEntities = useAppSelector((state) => state.verticalEntity.allEntities)
   const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(getAllHorizontalEntities())
@@ -79,15 +79,15 @@ const VerticalNavigation = () => {
     setOpen(false)
   }
 
-  const mockHorizontals = [
-    { id: 1, name: 'горизонтальная модель 1' },
-    { id: 2, name: 'горизонтальная модель 2' }
-  ]
-
-  const mockVerticals = [
-    { id: 3, name: 'вертикальная модель 1' },
-    { id: 4, name: 'вертикальная модель 2' }
-  ]
+  // const mockHorizontals = [
+  //   { id: 1, name: 'горизонтальная модель 1' },
+  //   { id: 2, name: 'горизонтальная модель 2' }
+  // ]
+  //
+  // const mockVerticals = [
+  //   { id: 3, name: 'вертикальная модель 1' },
+  //   { id: 4, name: 'вертикальная модель 2' }
+  // ]
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -173,8 +173,8 @@ const VerticalNavigation = () => {
           </ListItemButton>
           <Collapse in={openVertical && open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              {/*{allVrticalEntities.map((item) => (*/}
-              {mockVerticals.map((item) => (
+              {allVrticalEntities.map((item) => (
+                // {mockVerticals.map((item) => (
                 <NavLink
                   to={`vertical/${item.id}`}
                   className={clsx(classes.navlist__link, {
@@ -182,7 +182,7 @@ const VerticalNavigation = () => {
                   })}
                   key={item.id}
                   onClick={() => {
-                    setSelectedPage(item.id)
+                    setSelectedPage(Number(item.id))
                   }}
                 >
                   <ListItem disablePadding sx={{ display: 'block' }}>
@@ -238,8 +238,8 @@ const VerticalNavigation = () => {
           </ListItemButton>
           <Collapse in={openHorisontal && open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              {/*{allVrticalEntities.map((item) => (*/}
-              {mockHorizontals.map((item) => (
+              {allHorizontalEntities.map((item) => (
+                // {mockHorizontals.map((item) => (
                 <NavLink
                   to={`horizontal/${item.id}`}
                   className={clsx(classes.navlist__link, {
@@ -247,7 +247,7 @@ const VerticalNavigation = () => {
                   })}
                   key={item.id}
                   onClick={() => {
-                    setSelectedPage(item.id)
+                    setSelectedPage(Number(item.id))
                   }}
                 >
                   <ListItem disablePadding sx={{ display: 'block' }}>
@@ -269,7 +269,59 @@ const VerticalNavigation = () => {
               ))}
             </List>
           </Collapse>
+          <ListItem disablePadding sx={{ display: 'block' }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5
+              }}
+              onClick={(e) => {
+                e.preventDefault()
+                dispatch(getAllVerticalEntities())
+                dispatch(getAllHorizontalEntities())
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center'
+                }}
+              >
+                <Cached />
+              </ListItemIcon>
+
+              <ListItemText primary="Обновить" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
         </List>
+        <ListItem disablePadding sx={{ display: 'block' }}>
+          <ListItemButton
+            sx={{
+              minHeight: 48,
+              justifyContent: open ? 'initial' : 'center',
+              px: 2.5
+            }}
+            onClick={(e) => {
+              e.preventDefault()
+              dispatch(getAllVerticalEntities())
+              dispatch(getAllHorizontalEntities())
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : 'auto',
+                justifyContent: 'center'
+              }}
+            >
+              <Cached />
+            </ListItemIcon>
+
+            <ListItemText primary="Обновить" sx={{ opacity: open ? 1 : 0 }} />
+          </ListItemButton>
+        </ListItem>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, px: 3 }}>
         <Outlet />

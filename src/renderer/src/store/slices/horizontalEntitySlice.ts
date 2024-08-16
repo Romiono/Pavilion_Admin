@@ -2,9 +2,10 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
 import openNotification from '../../helpers/notification'
 import IAllEnttities from '../../types/IAllEntities'
+import IImages from '../../types/IImages'
 
 export interface IHorizontalEntity {
-  id: string
+  id: string | number
   name: string
   about: {
     title: {
@@ -13,7 +14,7 @@ export interface IHorizontalEntity {
       number: string
     }
     text: string
-    images: string[]
+    images: IImages[]
   }
 }
 
@@ -48,7 +49,7 @@ const initialState: initialState = {
   error: '',
   status: ''
 }
-export const getAllHorizontalEntities = createAsyncThunk<any, any>(
+export const getAllHorizontalEntities = createAsyncThunk<any>(
   'horizontalEntities/getAllEntities',
   // @ts-ignore
   async (_, { rejectWithValue }) => {
@@ -72,7 +73,7 @@ export const getEntityById = createAsyncThunk<any, any>(
       return data
     } catch (error) {
       if (error instanceof AxiosError) {
-        return rejectWithValue(error.response?.data.message)
+        return rejectWithValue(error)
       }
     }
   }
@@ -82,17 +83,17 @@ export const postEntity = createAsyncThunk<any, any>(
   'horizontalEntity/post',
   // @ts-ignore
   async (data, { rejectWithValue, dispatch }) => {
-    const { entity, index } = data
+    const { entity } = data
     try {
-      await axios.post(`${import.meta.env.VITE_BASE_URL_API}/api/horisontal${index}`, entity, {
+      await axios.post(`${import.meta.env.VITE_BASE_URL_API}/api/horisontal`, entity, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
-      dispatch(getEntityById(index))
     } catch (error) {
+      console.log(error)
       if (error instanceof AxiosError) {
-        return rejectWithValue(error.response?.data.message)
+        return rejectWithValue(error?.response?.status)
       }
     }
   }
@@ -141,7 +142,27 @@ export const horizontalEntitySlice = createSlice({
       })
     })
     builder.addCase(getEntityById.fulfilled, (state, action) => {
-      state.entity = action.payload.data.data.value
+      state.entity = {
+        id: '',
+        name: '',
+        about: {
+          title: {
+            img: '',
+            name: '',
+            number: ''
+          },
+          text: '',
+          images: []
+        }
+      }
+
+      state.entity.id = action.payload.data.data.value?.id
+      state.entity.name = action.payload.data.data.value?.name
+      state.entity.about.text = action.payload.data.data.value?.about?.text
+      state.entity.about.title.name = action.payload.data.data.value?.about?.title?.name
+      state.entity.about.title.img = action.payload.data.data.value?.about?.title?.img
+      state.entity.about.title.number = action.payload.data.data.value?.about?.title?.number
+      state.entity.about.images = action.payload.data.data.value?.about?.images
       state.loading = false
       state.error = ''
       state.status = 'succes'
@@ -165,7 +186,7 @@ export const horizontalEntitySlice = createSlice({
       state.error = ''
       openNotification({
         type: 'success',
-        text: 'Данные горизонтальной модели успешно обновлены'
+        text: 'Данные успешно обновлены'
       })
     })
     builder.addCase(postEntity.pending, (state) => {
@@ -174,10 +195,11 @@ export const horizontalEntitySlice = createSlice({
     })
     builder.addCase(postEntity.rejected, (state, action) => {
       state.loading = false
-      state.error = `${action.payload}`
+      // state.error = `${action.payload}`
       openNotification({
         type: 'error',
-        text: action.payload ? `${action.payload}` : 'Не удалось обнавить данные'
+        text:
+          action.payload === 400 ? `Все поля должны быть заполнены` : 'Не удалось обнавить данные'
       })
     })
   }

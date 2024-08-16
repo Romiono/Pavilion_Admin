@@ -2,9 +2,10 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
 import openNotification from '../../helpers/notification'
 import IAllEnttities from '../../types/IAllEntities'
+import IImages from '../../types/IImages'
 
 export interface IVerticalEntity {
-  id: string
+  id: string | number
   header: {
     title: string
     description: string
@@ -17,6 +18,7 @@ export interface IVerticalEntity {
     }
     sources: [
       {
+        id: string | number
         about: {
           number: string
           main: {
@@ -24,7 +26,7 @@ export interface IVerticalEntity {
             title: string
           }
           text: string
-          images: string[]
+          images: IImages[]
         }
       }
     ]
@@ -55,6 +57,7 @@ const initialState: initialState = {
       },
       sources: [
         {
+          id: '',
           about: {
             number: '',
             main: {
@@ -114,16 +117,12 @@ export const postEntity = createAsyncThunk<any, any>(
   async (data, { rejectWithValue, dispatch }) => {
     const { entity, period, id } = data
     try {
-      await axios.post(
-        `${import.meta.env.VITE_BASE_URL_API}/api/vertical/${id}/${period}`,
-        entity,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+      await axios.post(`${import.meta.env.VITE_BASE_URL_API}/api/vertical`, entity, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-      )
-      dispatch(getEntityById(period))
+      })
+      dispatch(getEntityById({ period, id }))
     } catch (error) {
       if (error instanceof AxiosError) {
         return rejectWithValue(error.response?.data.message)
@@ -183,7 +182,53 @@ export const verticalEntitySlice = createSlice({
       })
     })
     builder.addCase(getEntityById.fulfilled, (state, action) => {
-      state.entity = action.payload.data.data.value
+      // state.entity = action.payload.data.data.value
+      state.entity = {
+        id: '',
+        header: {
+          title: '',
+          description: ''
+        },
+        text: '',
+        secondLevel: {
+          header: {
+            title: '',
+            description: ''
+          },
+          sources: [
+            {
+              id: '',
+              about: {
+                number: '',
+                main: {
+                  img: '',
+                  title: ''
+                },
+                text: '',
+                images: []
+              }
+            }
+          ],
+          text: ''
+        }
+      }
+
+      state.entity.id = action.payload.data.data.value?.id
+      state.entity.text = action.payload.data.data.value?.text
+      state.entity.header.title = action.payload.data.data.value?.header?.title
+      state.entity.header.description = action.payload.data.data.value?.header?.description
+
+      state.entity.secondLevel.header.title =
+        action.payload.data.data.value?.secondLevel?.header?.title
+      state.entity.secondLevel.header.description =
+        action.payload.data.data.value?.secondLevel?.header?.description
+      state.entity.secondLevel.text = action.payload.data.data.value?.secondLevel?.text
+      if (action.payload.data.data.value.secondLevel.sources) {
+        state.entity.secondLevel.sources = action.payload.data.data.value?.secondLevel?.sources
+      } else {
+        state.entity.secondLevel.sources = [...state.entity.secondLevel.sources]
+      }
+
       state.loading = false
       state.error = ''
       state.status = 'succes'
@@ -207,7 +252,7 @@ export const verticalEntitySlice = createSlice({
       state.error = ''
       openNotification({
         type: 'success',
-        text: 'Данные вертикальной модели успешно обновлены'
+        text: 'Данные успешно обновлены'
       })
     })
     builder.addCase(postEntity.pending, (state) => {
